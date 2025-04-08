@@ -1,4 +1,4 @@
-# Wesley Teegarden M1OEP
+# Comp Chords
 ## Compatible Chords 
 Compatable chords is a music notation software that serves as a tool to help musicians
 write music. Music theory is a complex subject, and it can be difficult to keep track
