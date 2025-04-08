@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
-project(M1OEP_wteegard LANGUAGES CXX)
+project(CompChords LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 
@@ -21,7 +21,7 @@ FetchContent_MakeAvailable(webview)
 message(STATUS "Finished Fetching webview repository.")
 
 
-add_executable(M1OEP_wteegard
+add_executable(CompChords
         main.cpp
         Key.cpp
         Chord.cpp
@@ -31,5 +31,5 @@ add_executable(M1OEP_wteegard
         Triad.cpp 
         )
 
-target_link_libraries(M1OEP_wteegard PRIVATE webview::core)
+target_link_libraries(CompChords PRIVATE webview::core)
 
