@@ -1,0 +1,6 @@
+[submodule "midi/JUCE_FRAMEWORK"]
+	path = midi/JUCE_FRAMEWORK
+	url = https://github.com/juce-framework/JUCE
+[submodule "midi/JUCE"]
+	path = midi/JUCE
+	url = https://github.com/juce-framework/JUCE
