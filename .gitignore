@@ -1,0 +1,26 @@
+# CMake build directories
+/build/
+/CMakeFiles/
+/CMakeCache.txt
+Makefile
+cmake_install.cmake
+*.cmake
+
+# CLion project files (optional)
+.idea/
+
+# vcpkg folder
+/vcpkg/
+
+# OS generated files
+*.log
+*.user
+*.suo
+*.DS_Store
+Thumbs.db
+
+# Executables
+*.exe
+*.obj
+*.o
+*.pdb
