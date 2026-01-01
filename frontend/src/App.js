@@ -5,7 +5,7 @@ function App() {
   const [info, setInfo] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:18080/api/info") // Crow endpoint
+    fetch("http://localhost:18080/api/keySig") // Crow endpoint
       .then((res) => res.json())
       .then((data) => setInfo(data))
       .catch((err) => console.error(err));
@@ -15,9 +15,8 @@ function App() {
 
   return (
     <div>
-      <h1>{info.name}</h1>
-      <p>Language: {info.language}</p>
-      <p>Framework: {info.framework}</p>
+      <h1>Key Signature: {info.name}</h1>
+      <p>Notes: {info.notes}</p>
     </div>
   );
 }

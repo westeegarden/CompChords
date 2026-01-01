@@ -5,5 +5,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 find_package(Crow CONFIG REQUIRED)
 
-add_executable(crow_backend main.cpp)
+add_executable(crow_backend main.cpp
+        Key.h
+        Key.cpp)
 target_link_libraries(crow_backend PRIVATE Crow::Crow)
