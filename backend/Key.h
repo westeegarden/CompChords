@@ -13,7 +13,7 @@ class Key {
 private:
     //Fields
     //Contains key center name and value
-    vector<string> keyCenter = {"", ""};
+    string keyCenter;
 
     //Denotes key as major or minor
     string keyQuality;
@@ -36,7 +36,7 @@ public:
     Key();
 
     //Setting key signature
-    void setKey(int center, const string& quality, bool flats);
+    void setKey(int center, string quality, bool flats);
 
     //Returns vector of notes in working key
     vector<string> getWorkingKey();

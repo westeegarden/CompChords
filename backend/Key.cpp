@@ -17,9 +17,10 @@ Key::Key() = default;
  * @param quality: the scale quality (major/minor)
  * @return: void
  */
-void Key::setKey(int center, const string& quality, bool flats) {
+void Key::setKey(int center, string quality, bool flats) {
  //set flat key bool
  isFlatScale = flats;
+
  //Major keys
  if (quality == "Major") {
   for (int i : majorKey) {
@@ -35,7 +36,7 @@ void Key::setKey(int center, const string& quality, bool flats) {
  //Minor keys
  else if (quality == "minor") {
   for (int i : minorKey) {
-   vector<string> note = keyNames[((center + i - 1) % 12 + 1)];
+   vector<string> note = keyNames[((center + i - 1) % 12)];
    if (flats && note.size() > 2) {
     notes.push_back(note[1]);
    }
@@ -44,6 +45,9 @@ void Key::setKey(int center, const string& quality, bool flats) {
    }
   }
  }
+
+ keyCenter = notes[0];
+ keyQuality = quality;
 }
 
 /*
@@ -61,9 +65,7 @@ vector<string> Key::getWorkingKey() {
  * @returns: string name of key
  */
 string Key::getName() {
- string center = keyCenter[0] + keyCenter[1];
- string name = center + " " + keyQuality;
- return name;
+ return string(keyCenter) + " " + keyQuality;
 }
 
 /*
