@@ -17,35 +17,36 @@ Key::Key() = default;
  * @param quality: the scale quality (major/minor)
  * @return: void
  */
-void Key::setKey(int center, string quality, bool flats) {
+void Key::setKey(int center, const string &quality, bool flats) {
  //set flat key bool
  isFlatScale = flats;
+ vector<int> workingKeyQuality;
 
- //Major keys
+ //Determine Key Quality
  if (quality == "Major") {
-  for (int i : majorKey) {
-   vector<string> note = keyNames[((center + i - 1) % 12 + 1)];
-   if (flats && note.size() > 2) {
+  workingKeyQuality = majorKey;
+ } else if (quality == "minor") {
+  workingKeyQuality = minorKey;
+ }
+ // Fill notes vector
+ for (int i : workingKeyQuality) {
+  vector<string> note = keyNames[((center + i - 1) % 12)];
+  // If key uses flats
+  if (flats && note.size() > 2) {
     notes.push_back(note[1]);
-   }
-   else {
+    sharpsOrFlats.push_back(note[1]);
+  }
+  // If key uses sharps
+  else if (note.size() > 2) {
     notes.push_back(note[0]);
-   }
+    sharpsOrFlats.push_back(note[0]);
+  }
+  // If key has none
+  else {
+   notes.push_back(note[0]);
   }
  }
  //Minor keys
- else if (quality == "minor") {
-  for (int i : minorKey) {
-   vector<string> note = keyNames[((center + i - 1) % 12)];
-   if (flats && note.size() > 2) {
-    notes.push_back(note[1]);
-   }
-   else {
-    notes.push_back(note[0]);
-   }
-  }
- }
-
  keyCenter = notes[0];
  keyQuality = quality;
 }
@@ -77,4 +78,12 @@ bool Key::getIsFlatScale() const {
  return isFlatScale;
 }
 
-
+/*
+ * getSharpsOrFlats returns a string vector of the sharps or
+ * flats included in the working key
+ * @param: none
+ * @returns: vector<string> sharpsOrFlats
+ */
+vector<string> Key::getSharpsOrFlats() {
+ return sharpsOrFlats;
+}

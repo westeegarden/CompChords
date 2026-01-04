@@ -50,16 +50,25 @@ int main() {
     CROW_ROUTE(app, "/api/keySig").methods("GET"_method)
     ([]() {
         try {
+            // Create test key
             Key testKey;
-            testKey.setKey(2, "minor", true);
+            testKey.setKey(1, "Major", false);
 
+            // Set JSON HTTP response values
             crow::json::wvalue res;
             res["name"] = testKey.getName();
             res["notes"] = crow::json::wvalue::list();
 
             auto notes = testKey.getWorkingKey();
+            auto sharpsFlats = testKey.getSharpsOrFlats();
             for (size_t i = 0; i < notes.size(); ++i) {
                 res["notes"][i] = notes[i];
+            }
+
+            res["isFlat"] = testKey.getIsFlatScale();
+
+            for (size_t i = 0; i < sharpsFlats.size(); ++i) {
+                res["sharpsOrFlats"][i] = sharpsFlats[i];
             }
 
             crow::response r(res);

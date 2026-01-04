@@ -15,9 +15,15 @@ function App() {
 
   return (
     <div>
-      <h1>Key Signature: {info.name}</h1>
-      <p>Notes: {info.notes}</p>
-    </div>
+    <h1>Key Signature: {info.name}</h1>
+    <p>Notes: {info.notes.join(", ")}</p>
+
+    <p>
+      {info.isFlat
+        ? `Flats: ${info.sharpsOrFlats}`
+        : `Sharps: ${info.sharpsOrFlats}`}
+    </p>
+  </div>
   );
 }
 

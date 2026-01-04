@@ -25,6 +25,9 @@ private:
     const vector<int> majorKey = {0, 2, 4, 5, 7, 9, 11};
     const vector<int> minorKey = {0, 2, 3, 5, 7, 8, 10};
 
+    //Vector for the sharps or flats in a key
+    vector<string> sharpsOrFlats;
+
     //Vector containing all properties of each note
     vector<vector<string>> keyNames = {{"A", "1"}, {"A#", "Bb", "2"}, {"B", "3"}, {"C", "4"}, {"C#", "Db", "5"},
                                           {"D", "6"}, {"D#", "Eb", "7"}, {"E", "8"}, {"F", "9"}, {"F#", "Gb", "10"},
@@ -36,7 +39,7 @@ public:
     Key();
 
     //Setting key signature
-    void setKey(int center, string quality, bool flats);
+    void setKey(int center, const string &quality, bool flats);
 
     //Returns vector of notes in working key
     vector<string> getWorkingKey();
@@ -45,7 +48,10 @@ public:
     string getName();
 
     //Returns boolean true if key uses flats, false otherwise
-    bool getIsFlatScale() const;
+    [[nodiscard]] bool getIsFlatScale() const;
+
+    //Returns a string vector of the sharps or flats included in the scale
+    vector<string> getSharpsOrFlats();
 };
 
 #endif //KEY_H
