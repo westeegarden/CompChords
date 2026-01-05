@@ -17,27 +17,61 @@ Key::Key() = default;
  * @param quality: the scale quality (major/minor)
  * @return: void
  */
-void Key::setKey(int center, const string &quality, bool flats) {
- //set flat key bool
- isFlatScale = flats;
+void Key::setKey(const string &centerString, const string &quality) {
+
  vector<int> workingKeyQuality;
 
  //Determine Key Quality
- if (quality == "Major") {
+ if (quality == "major") {
   workingKeyQuality = majorKey;
  } else if (quality == "minor") {
   workingKeyQuality = minorKey;
  }
+ else {
+  throw runtime_error("Invalid quality: " + quality);
+ }
+
+ //Determine value of isFlatScale
+ isFlatScale = true;
+ const string refName = centerString + quality;
+ for (const string& s : sharpKeys) {
+  if (s == refName) {
+   isFlatScale = false;
+  }
+ }
+
+ //Convert center string to int for processing
+ int center = 0;
+
+ for (size_t j = 0; j < keyNames.size(); j++) {
+  const auto& spellings = keyNames[j];
+
+  // If scale uses flats
+  if (isFlatScale && spellings.size() > 1 && spellings[1] == centerString) {
+   center = static_cast<int>(j);
+   break;
+  }
+  if (isFlatScale && spellings.size() < 2 && spellings[0] == centerString) {
+   center = static_cast<int>(j);
+   break;
+  }
+  if (!isFlatScale && spellings[0] == centerString) {
+   center = static_cast<int>(j);
+   break;
+  }
+ }
+
+
  // Fill notes vector
  for (int i : workingKeyQuality) {
-  vector<string> note = keyNames[((center + i - 1) % 12)];
+  vector<string> note = keyNames[((center + i) % 12)];
   // If key uses flats
-  if (flats && note.size() > 2) {
+  if (isFlatScale && note.size() > 1) {
     notes.push_back(note[1]);
     sharpsOrFlats.push_back(note[1]);
   }
   // If key uses sharps
-  else if (note.size() > 2) {
+  else if (note.size() > 1) {
     notes.push_back(note[0]);
     sharpsOrFlats.push_back(note[0]);
   }
@@ -67,6 +101,10 @@ vector<string> Key::getWorkingKey() {
  */
 string Key::getName() {
  return string(keyCenter) + " " + keyQuality;
+}
+
+string Key::getQuality() {
+ return keyQuality;
 }
 
 /*

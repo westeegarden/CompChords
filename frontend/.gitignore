@@ -11,6 +11,9 @@
 # production
 /build
 
+#cmake
+cmake-build-*/
+
 # misc
 .DS_Store
 .env.local

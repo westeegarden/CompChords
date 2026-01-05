@@ -7,7 +7,9 @@ find_package(Crow CONFIG REQUIRED)
 
 add_executable(crow_backend backend/main.cpp
         backend/Key.h
-        backend/Key.cpp)
+        backend/Key.cpp
+        backend/Chord.cpp
+        backend/Chord.h)
 target_link_libraries(crow_backend PRIVATE Crow::Crow)
 
 # Add the tests folder

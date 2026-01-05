@@ -9,7 +9,7 @@ using namespace std;
 
 int main() {
     Key k;
-    k.setKey(2, "minor", true);
+    k.setKey("Bb", "minor");
     vector<string> notes = k.getWorkingKey();
 
     cout << "Testing Key class...\n";
@@ -17,6 +17,7 @@ int main() {
     // Testing getName()
     if (k.getName() != "Bb minor") {
         cerr << "FAIL: Expected name Bb minor, got " << k.getName() << endl;
+        return 1;
     }
 
     // Testing getWorkingKey()
@@ -63,6 +64,22 @@ int main() {
     // Testing getIsFlatScale
     if (k.getIsFlatScale() != true) {
         cerr << "FAIL: Expected flat scale to be true\n";
+        return 1;
+    }
+
+    // Testing getSharpsOrFlats
+    vector<string> testFlats = {"Bb", "Db", "Eb", "Gb", "Ab"};
+    if (k.getSharpsOrFlats() != testFlats) {
+        cerr << "FAIL: Expected flats to be [Bb, Db, Eb, Gb, Ab], got something else\n";
+        return 1;
+    }
+
+    // Testing key of C
+    Key k2;
+    k2.setKey("C", "major");
+    if (k2.getWorkingKey()[0] != "C") {
+        cerr << "FAIL: -for key of C- Expected C, got " << k2.getWorkingKey()[0] << "\n";
+        return 1;
     }
 
     std::cout << "PASS\n";

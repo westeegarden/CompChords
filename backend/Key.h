@@ -29,23 +29,31 @@ private:
     vector<string> sharpsOrFlats;
 
     //Vector containing all properties of each note
-    vector<vector<string>> keyNames = {{"A", "1"}, {"A#", "Bb", "2"}, {"B", "3"}, {"C", "4"}, {"C#", "Db", "5"},
-                                          {"D", "6"}, {"D#", "Eb", "7"}, {"E", "8"}, {"F", "9"}, {"F#", "Gb", "10"},
-                                          {"G", "11"}, {"G#", "Ab", "12"}};
-    bool isFlatScale{};
+    vector<vector<string>> keyNames = {{"A"}, {"A#", "Bb"}, {"B"}, {"C"}, {"C#", "Db"},
+                                          {"D"}, {"D#", "Eb"}, {"E"}, {"F"}, {"F#", "Gb"},
+                                          {"G"}, {"G#", "Ab"}};
+
+    //Vector containing the names of keys using sharps for reference
+    vector<string> sharpKeys = {"Amajor", "A#major", "A#minor", "Bmajor", "Bminor", "C#major", "C#minor", "Dmajor",
+                                "D#major", "D#minor", "Emajor", "Eminor", "F#major", "F#minor", "Gmajor", "G#major", "G#minor"};
+
+    bool isFlatScale;
 
 public:
     //Constructor
     Key();
 
     //Setting key signature
-    void setKey(int center, const string &quality, bool flats);
+    void setKey(const string &centerString, const string &quality);
 
     //Returns vector of notes in working key
     vector<string> getWorkingKey();
 
     //Returns the name of the working key
     string getName();
+
+    //Returns key quality as a string
+    string getQuality();
 
     //Returns boolean true if key uses flats, false otherwise
     [[nodiscard]] bool getIsFlatScale() const;

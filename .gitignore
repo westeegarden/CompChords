@@ -5,6 +5,7 @@
 Makefile
 cmake_install.cmake
 *.cmake
+cmake-build-*/
 
 # CLion project files (optional)
 .idea/
