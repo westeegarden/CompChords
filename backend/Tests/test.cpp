@@ -1,8 +1,8 @@
 //
 // Created by weste on 1/1/2026.
 //
-#include "../Key.h"
-#include "../Chord.h"
+#include "../domain/Key.h"
+#include "../domain/Chord.h"
 #include <iostream>
 #include <vector>
 #include <string>

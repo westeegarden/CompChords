@@ -19,6 +19,13 @@ Key::Key() = default;
  */
 void Key::setKey(const string &centerString, const string &quality) {
 
+ // Reset fields
+ notes.clear();
+ sharpsOrFlats.clear();
+ keyCenter.clear();
+ keyQuality.clear();
+ isFlatScale = false;
+
  vector<int> workingKeyQuality;
 
  //Determine Key Quality
