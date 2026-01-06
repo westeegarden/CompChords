@@ -5,6 +5,7 @@
 #include "Chord.h"
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include <algorithm>
 #include <iostream>
 using namespace std;
@@ -19,71 +20,120 @@ Chord::Chord() = default;
  * Takes: in value of root
  * Returns: Nothing
 */
-void Chord::buildChord(const int root, int rna, Key keySig, bool flatScale) {
-    // Setting roman numeral
-    vector<string> romanNumerals;
-    if (keySig.getQuality() == "Major") {
-        romanNumerals = majorRomanNumerals;
+void Chord::buildChord(string rootName, string modName, Key &workingKey) {
+
+    vector<string> workingKeyNotes = workingKey.getWorkingKey();
+
+    // Establish root note as an int
+    // rootIndex is to be used with noteNames vector only, not scale degree or RNA
+    rootNote = rootName;
+    int rootIndex = 0;
+    for (int i = 0; i < noteNames.size(); i++) {
+        if (workingKey.getIsFlatScale() && noteNames[i].size() > 1 && noteNames[i][1] == rootName) {
+            rootIndex = i;
+            break;
+        }
+        if (noteNames[i].size() > 1 && noteNames[i][1] == rootName) {
+            rootIndex = i;
+            break;
+        }
+        if (noteNames[i][0] == rootName) {
+            rootIndex = i;
+            break;
+        }
     }
-    else {
-        romanNumerals = minorRomanNumerals;
+
+    // Establish root's scale degree for rna and quality type assignment
+    // rnaIndex is to be used for scale degree and RNA only
+    int rnaIndex = 0;
+    for (int i = 0; i < workingKeyNotes.size(); i++) {
+        if (workingKeyNotes[i] == rootName) {
+            rnaIndex = i;
+        }
     }
-    romanNumeral = romanNumerals[rna];
 
-    // Setting root note
-    rootNote = keySig.getWorkingKey()[root];
+    // Check for triad quality and set RNA
+    bool isMajorChord = true;
+    if (workingKey.getQuality() == "minor") {
+        isMajorChord = minorScaleChordQualities[rnaIndex];
+    } else {
+        isMajorChord = majorScaleChordQualities[rnaIndex];
+    }
+    if (isMajorChord) {
+        quality = "major";
+        romanNumeral = majorRomanNumerals[rnaIndex];
+        availableMods = majorMods;
+    } else {
+        quality = "minor";
+        romanNumeral = minorRomanNumerals[rnaIndex];
+        availableMods = minorMods;
+    }
+    // Setting chord name
+    name = rootNote + modName;
 
-    // Setting chord quality
-
+    //Fill notes vector
+    notes.clear();
+    vector<int> chordTemplate = modStringToVector(modName);
+    for (int i : chordTemplate) {
+        vector<string> currentNote = noteNames[(rootIndex + i - 1) % 12];
+        if (workingKey.getIsFlatScale() && currentNote.size() > 1) {
+            notes.push_back(currentNote[1]);
+        } else {
+            notes.push_back(currentNote[0]);
+        }
+    }
 }
 
 /*
- * printChord prints the chord name as well as all the notes in it consists of
-*/
-void Chord::printChord(ostream &outs, bool flatScale) {
-    string output;
-    outs << "|" << romanNumeral;
-	for (int i = 0; i < 4 - romanNumeral.length(); i++) {
-		outs << " ";
-	}
-
-    outs << "|[ ";
-    for (int i = 0; i < notes.size(); i++) {
-        if (flatScale && noteNames[notes[i] - 1][0][1] == '#') {
-            output = noteNames[notes[i] - 1][1];
-        }
-        else {
-            output = noteNames[notes[i] - 1][0];
-        }
-        outs << output << " ";
+ * qualityStringToVector takes a string of a given chord mod and returns the associated
+ * template int vector to be used in determining the notes in a chord.
+ * @param: string quality describing mods
+ * @returns: vector<int> template for note numbers
+ */
+vector<int> Chord::modStringToVector(const string &mod) {
+    if (mod == "none") {
+        return (quality == "major") ? maj : min;
     }
-    outs << "]" << endl;
+    if (mod == "aug")  return aug;
+    if (mod == "Maj7") return maj7;
+    if (mod == "7")    return dom7;
+    if (mod == "aug7") return aug7;
+    if (mod == "Maj9") return maj9;
+    if (mod == "Maj9#11") return maj9sharp11;
+    if (mod == "9")    return dom9;
+    if (mod == "7b9") return dom7b9;
+    if (mod == "7#9") return dom7sharp9;
+    if (mod == "7#11") return dom7sharp11;
+    if (mod == "6") return maj6;
+    if (mod == "dim") return dim;
+    if (mod == "min7") return min7;
+    if (mod == "min7b5") return min7b5;
+    if (mod == "dim7") return dim7;
+    if (mod == "min9") return min9;
+    if (mod == "minb9") return minb9;
+    if (mod == "min11") return min11;
+    if (mod == "min6") return min6;
+
+    return {};
+}
+
+vector<string> Chord::getAvailableMods() {
+    return availableMods;
 }
 
 vector<vector<string>> Chord::getNoteNames() {
     return noteNames;
 }
 
-vector<int> Chord::getNotes() {
+vector<string> Chord::getNotes() {
     return notes;
+}
+
+string Chord::getChordName() {
+    return name;
 }
 
 string Chord::getRNA() {
     return romanNumeral;
 }
 
-int Chord::getLength() {
-	return length;
-}
-
-void Chord::setRNA(string name) {
-    romanNumeral = name;
-}
-
-void Chord::setLength(int len) {
-	length = len;
-}
-
-void Chord::push_back_notes(int val) {
-    notes.push_back(val);
-}
