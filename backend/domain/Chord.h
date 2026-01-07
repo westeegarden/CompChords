@@ -6,8 +6,9 @@
 #define CHORD_H
 #include <vector>
 #include <string>
-#include "Key.h"
 using namespace std;
+
+class Key;
 
 class Chord {
 protected:
@@ -96,6 +97,8 @@ public:
     vector<vector<string>> getNoteNames();
 
     vector<string> getNotes();
+
+    string getQuality();
 
     string getChordName();
 

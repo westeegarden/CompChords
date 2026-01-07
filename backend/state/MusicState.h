@@ -5,9 +5,16 @@
 #ifndef MUSICSTATE_H
 #define MUSICSTATE_H
 #pragma once
-#include "../domain/Key.h"
+#include <mutex>
+#include <memory>
+
+// Forward declarations ONLY
+class Key;
+class Chord;
 
 struct MusicState {
-    Key activeKey;
+    std::unique_ptr<Key> activeKey;
+    std::unique_ptr<Chord> activeChord;
+    std::mutex mutex;
 };
 #endif //MUSICSTATE_H

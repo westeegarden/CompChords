@@ -4,6 +4,10 @@
 
 #include "key_routes.h"
 #include "../services/KeyService.h"
+#include "../state/MusicState.h"
+#include "../domain/Key.h"
+#include <mutex>
+#include "crow.h"
 
 void registerKeyRoutes(crow::SimpleApp& app,
                        MusicState& state,
@@ -19,9 +23,9 @@ void registerKeyRoutes(crow::SimpleApp& app,
         if (!tonic || !quality)
             return crow::response(400, "Missing params");
 
-        Key& key = state.activeKey;
-
         KeyService::setActiveKey(state, tonic, quality);
+
+        auto& key = *state.activeKey;
 
         crow::json::wvalue res;
         res["name"] = key.getName();

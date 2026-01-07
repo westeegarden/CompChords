@@ -3,11 +3,12 @@
 //
 
 #include "ChordService.h"
+#include "../state/MusicState.h"
+#include "../domain/Chord.h"
+#include "../domain/Key.h"
 
-Chord ChordService::buildChord(MusicState& state,
-                               const std::string& root,
-                               const std::string& mod) {
-    Chord c;
-    c.buildChord(root, mod, state.activeKey);
-    return c;
+void ChordService::buildChord(MusicState& state,
+                              const std::string& root,
+                              const std::string& mod) {
+    state.activeChord->buildChord(root, mod, *state.activeKey);
 }

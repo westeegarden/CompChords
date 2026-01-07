@@ -3,6 +3,7 @@
 //
 
 #include "Chord.h"
+#include "Key.h"
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -21,6 +22,14 @@ Chord::Chord() = default;
  * Returns: Nothing
 */
 void Chord::buildChord(string rootName, string modName, Key &workingKey) {
+
+    // Clearing variables
+    notes.clear();
+    availableMods.clear();
+    romanNumeral.clear();
+    quality.clear();
+    name.clear();
+    rootNote.clear();
 
     vector<string> workingKeyNotes = workingKey.getWorkingKey();
 
@@ -49,6 +58,7 @@ void Chord::buildChord(string rootName, string modName, Key &workingKey) {
     for (int i = 0; i < workingKeyNotes.size(); i++) {
         if (workingKeyNotes[i] == rootName) {
             rnaIndex = i;
+            break;
         }
     }
 
@@ -72,7 +82,6 @@ void Chord::buildChord(string rootName, string modName, Key &workingKey) {
     name = rootNote + modName;
 
     //Fill notes vector
-    notes.clear();
     vector<int> chordTemplate = modStringToVector(modName);
     for (int i : chordTemplate) {
         vector<string> currentNote = noteNames[(rootIndex + i - 1) % 12];
@@ -127,6 +136,10 @@ vector<vector<string>> Chord::getNoteNames() {
 
 vector<string> Chord::getNotes() {
     return notes;
+}
+
+string Chord::getQuality() {
+    return quality;
 }
 
 string Chord::getChordName() {

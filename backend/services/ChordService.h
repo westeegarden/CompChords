@@ -12,7 +12,7 @@ using namespace std;
 
 class ChordService {
 public:
-    static Chord buildChord(MusicState& state,
+    static void buildChord(MusicState& state,
                             const string& root,
                             const string& mod);
 };
