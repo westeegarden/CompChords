@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { TextField, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
 
 export default function ChordBuilder() {
     const [root, setRoot] = useState('C');
-    const [quality, setQuality] = useState('major');
+    const [quality, setQuality] = useState('Major');
     const [mod, setMod] = useState('none');
     const [name, setName] = useState('Cmaj');
     const [notes, setNotes] = useState([]);
@@ -29,6 +30,7 @@ export default function ChordBuilder() {
                 const data = await res.json();
                 setChordInfo(data);
                 setRoots(data.availableRoots);
+                setQuality(data.quality);
                 setError(null);
             } catch (err) {
                 setError(err.message);
@@ -45,46 +47,38 @@ export default function ChordBuilder() {
             <h2 style={{ margin: '0 0 16px 0', fontSize: '18px' }}>Chord Builder</h2>
             
             <div style={{ marginBottom: '12px' }}>
-                <label htmlFor="root" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>
-                    Root
-                </label>
-                <select
-                    id="root"
-                    value={root}
-                    onChange={(e) => setRoot(e.target.value)}
-                    style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-                >
-                    {roots.map((root) => (
-                        <option key={root} value={root}>
-                            {root}
-                        </option>
-                    ))}
-                </select>
+                <FormControl fullWidth>
+                    <InputLabel id="root-label">Root</InputLabel>
+                    <Select
+                        labelId="root-label"
+                        id="root"
+                        value={root}
+                        label="Root"
+                        onChange={(e) => setRoot(e.target.value)}
+                    >
+                        {roots.map((r) => (
+                            <MenuItem key={r} value={r}>
+                                {r}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
             </div>
 
-            {/*<div>
-                <label htmlFor="keyQuality" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>
-                    Key Quality
-                </label>
-                <select
-                    id="keyQuality"
-                    value={keyQuality}
-                    onChange={(e) => setKeyQuality(e.target.value)}
-                    style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-                >
-                    {keyQualities.map((quality) => (
-                        <option key={quality} value={quality}>
-                            {quality.charAt(0).toUpperCase() + quality.slice(1)}
-                        </option>
-                    ))}
-                </select>
+            <div>
+                <TextField
+                    label="General Quality"
+                    value={quality}
+                    variant="outlined"
+                    fullWidth
+                />
                 {error && (
                     <div style={{ marginTop: '12px', color: 'red' }}>
                         {error}
                     </div>
                 )}
 
-                {keyInfo && (
+                {/*{keyInfo && (
                     <div style={{ marginTop: '16px', fontSize: '14px' }}>
                         <strong>{keyInfo.name}</strong>
 
@@ -99,8 +93,8 @@ export default function ChordBuilder() {
                             </div>
                         )}
                     </div>
-                )}
-            </div>*/}
+                )}*/}
+            </div>
         </div>
     );
 }

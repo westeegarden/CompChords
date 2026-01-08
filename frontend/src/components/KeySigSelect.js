@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { TextField, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
 
 export default function KeySigSelect() {
     const [keyCenter, setKeyCenter] = useState('C');
@@ -40,39 +41,41 @@ export default function KeySigSelect() {
             <h2 style={{ margin: '0 0 16px 0', fontSize: '18px' }}>Key Signature</h2>
             
             <div style={{ marginBottom: '12px' }}>
-                <label htmlFor="keyCenter" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>
-                    Key Center
-                </label>
-                <select
-                    id="keyCenter"
-                    value={keyCenter}
-                    onChange={(e) => setKeyCenter(e.target.value)}
-                    style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-                >
-                    {keyCenters.map((key) => (
-                        <option key={key} value={key}>
-                            {key}
-                        </option>
-                    ))}
-                </select>
+                <FormControl fullWidth>
+                    <InputLabel id="keyCenter-label">Key Center</InputLabel>
+                    <Select
+                        labelId="keyCenter-label"
+                        id="keyCenter"
+                        value={keyCenter}
+                        label="Key Center"
+                        onChange={(e) => setKeyCenter(e.target.value)}
+                    >
+                        {keyCenters.map((r) => (
+                            <MenuItem key={r} value={r}>
+                                                {r}
+                                            </MenuItem>
+                                        ))}
+                    </Select>
+                </FormControl>
             </div>
 
             <div>
-                <label htmlFor="keyQuality" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>
-                    Key Quality
-                </label>
-                <select
-                    id="keyQuality"
-                    value={keyQuality}
-                    onChange={(e) => setKeyQuality(e.target.value)}
-                    style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
-                >
-                    {keyQualities.map((quality) => (
-                        <option key={quality} value={quality}>
-                            {quality.charAt(0).toUpperCase() + quality.slice(1)}
-                        </option>
-                    ))}
-                </select>
+                <FormControl fullWidth>
+                    <InputLabel id="keyQuality-label">Key Quality</InputLabel>
+                    <Select
+                        labelId="keyQuality-label"
+                        id="keyQuality"
+                        value={keyQuality}
+                        label="Key Quality"
+                        onChange={(e) => setKeyQuality(e.target.value)}
+                    >
+                        {keyQualities.map((r) => (
+                            <MenuItem key={r} value={r}>
+                                {r}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 {error && (
                     <div style={{ marginTop: '12px', color: 'red' }}>
                         {error}
