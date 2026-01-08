@@ -79,7 +79,14 @@ void Chord::buildChord(string rootName, string modName, Key &workingKey) {
         availableMods = minorMods;
     }
     // Setting chord name
-    name = rootNote + modName;
+    if (modName == "none" && isMajorChord) {
+        name = rootNote + "Maj";
+    }
+    else if (modName == "none" && !isMajorChord) {
+        name = rootNote + "min";
+    } else {
+        name = rootNote + modName;
+    }
 
     //Fill notes vector
     vector<int> chordTemplate = modStringToVector(modName);

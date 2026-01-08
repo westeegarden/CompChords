@@ -8,6 +8,7 @@ export default function ChordBuilder() {
     const [name, setName] = useState('Cmaj');
     const [notes, setNotes] = useState([]);
     const [roots, setRoots] = useState([]);
+    const [mods, setMods] = useState([]);
     const [chordInfo, setChordInfo] = useState(null);
     const [error, setError] = useState(null);
 
@@ -31,6 +32,9 @@ export default function ChordBuilder() {
                 setChordInfo(data);
                 setRoots(data.availableRoots);
                 setQuality(data.quality);
+                setMods(data.availableMods);
+                setName(data.name);
+                setNotes(data.notes);
                 setError(null);
             } catch (err) {
                 setError(err.message);
@@ -46,6 +50,7 @@ export default function ChordBuilder() {
         <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px', maxWidth: '300px' }}>
             <h2 style={{ margin: '0 0 16px 0', fontSize: '18px' }}>Chord Builder</h2>
             
+            {/* Root Selection */}
             <div style={{ marginBottom: '12px' }}>
                 <FormControl fullWidth>
                     <InputLabel id="root-label">Root</InputLabel>
@@ -65,6 +70,7 @@ export default function ChordBuilder() {
                 </FormControl>
             </div>
 
+            {/* General Quality Display */}
             <div>
                 <TextField
                     label="General Quality"
@@ -77,24 +83,49 @@ export default function ChordBuilder() {
                         {error}
                     </div>
                 )}
-
-                {/*{keyInfo && (
-                    <div style={{ marginTop: '16px', fontSize: '14px' }}>
-                        <strong>{keyInfo.name}</strong>
-
-                        <div>
-                            Notes: {keyInfo.notes.join(', ')}
-                        </div>
-
-                        {keyInfo.sharpsOrFlats.length > 0 && (
-                            <div>
-                                {keyInfo.isFlat ? 'Flats' : 'Sharps'}:{' '}
-                                {keyInfo.sharpsOrFlats.join(', ')}
-                            </div>
-                        )}
-                    </div>
-                )}*/}
             </div>
+
+            {/* Mod Selection */}
+            <div style={{ marginBottom: '12px', marginTop: '12px' }}>
+                <FormControl fullWidth>
+                    <InputLabel id="mod-label">Mods/Extensions</InputLabel>
+                    <Select
+                        labelId="mod-label"
+                        id="mod"
+                        value={mod}
+                        label="Mods/Extensions"
+                        onChange={(e) => setMod(e.target.value)}
+                    >
+                        {mods.map((r) => (
+                            <MenuItem key={r} value={r}>
+                                {r}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+            </div>
+
+            {/* Chord Name Display */}
+            <div>
+                <TextField
+                    label="Chord"
+                    value={name}
+                    variant="outlined"
+                    fullWidth
+                />
+                {error && (
+                    <div style={{ marginTop: '12px', color: 'red' }}>
+                        {error}
+                    </div>
+                )}
+            </div>
+
+            {/* Notes Display */}
+            {chordInfo && (
+                <div style={{ marginTop: '16px', fontSize: '14px' }}>
+                    <strong>Notes:</strong> {notes.join(', ')}
+                </div>
+            )}
         </div>
     );
 }

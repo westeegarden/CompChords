@@ -40,6 +40,7 @@ export default function KeySigSelect() {
         <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px', maxWidth: '300px' }}>
             <h2 style={{ margin: '0 0 16px 0', fontSize: '18px' }}>Key Signature</h2>
             
+            {/* Key Center Selection */}
             <div style={{ marginBottom: '12px' }}>
                 <FormControl fullWidth>
                     <InputLabel id="keyCenter-label">Key Center</InputLabel>
@@ -59,6 +60,7 @@ export default function KeySigSelect() {
                 </FormControl>
             </div>
 
+            {/* Key Quality Selection */}
             <div>
                 <FormControl fullWidth>
                     <InputLabel id="keyQuality-label">Key Quality</InputLabel>
@@ -82,6 +84,7 @@ export default function KeySigSelect() {
                     </div>
                 )}
 
+                {/* Key Info Display */}
                 {keyInfo && (
                     <div style={{ marginTop: '16px', fontSize: '14px' }}>
                         <strong>{keyInfo.name}</strong>
