@@ -12,9 +12,6 @@ export default function ChordBuilder() {
     const [chordInfo, setChordInfo] = useState(null);
     const [error, setError] = useState(null);
 
-    const keyCenters = ['C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'];
-    const keyQualities = ['major', 'minor'];
-
     useEffect(() => {
         async function fetchChord() {
             try {
