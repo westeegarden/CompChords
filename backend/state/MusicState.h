@@ -5,6 +5,7 @@
 #ifndef MUSICSTATE_H
 #define MUSICSTATE_H
 #pragma once
+#include "../domain/Chord.h"
 #include <mutex>
 #include <memory>
 

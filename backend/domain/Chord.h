@@ -100,7 +100,7 @@ public:
 
     string getQuality();
 
-    string getChordName();
+    string getName();
 
     string getRNA();
 };

@@ -142,7 +142,7 @@ string Chord::getQuality() {
     return quality;
 }
 
-string Chord::getChordName() {
+string Chord::getName() {
     return name;
 }
 

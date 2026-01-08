@@ -19,7 +19,8 @@ add_executable(crow_backend backend/main.cpp
         backend/api/key_routes.h
         backend/api/chord_routes.cpp
         backend/api/chord_routes.h
-        backend/utils/JsonUtils.h)
+        backend/utils/JsonUtils.h
+)
 target_link_libraries(crow_backend PRIVATE Crow::Crow)
 
 # Add the tests folder

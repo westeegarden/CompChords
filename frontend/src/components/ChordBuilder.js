@@ -1,91 +1,106 @@
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react';
 
 export default function ChordBuilder() {
-  const [roots, setRoots] = useState([]);
-  const [root, setRoot] = useState("");
-  const [mods, setMods] = useState([]);
-  const [selectedMod, setSelectedMod] = useState("none");
+    const [root, setRoot] = useState('C');
+    const [quality, setQuality] = useState('major');
+    const [mod, setMod] = useState('none');
+    const [name, setName] = useState('Cmaj');
+    const [notes, setNotes] = useState([]);
+    const [roots, setRoots] = useState([]);
+    const [chordInfo, setChordInfo] = useState(null);
+    const [error, setError] = useState(null);
 
-  const [generalQuality, setGeneralQuality] = useState("");
-  const [chordName, setChordName] = useState("");
-  const [romanNumeral, setRomanNumeral] = useState("");
-  const [notes, setNotes] = useState([]);
+    const keyCenters = ['C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'];
+    const keyQualities = ['major', 'minor'];
 
-  // Load available roots when component mounts
-  useEffect(() => {
-    fetch("http://localhost:18080/api/chord/options")
-      .then(res => res.json())
-      .then(data => {
-        setRoots(data.roots);
-        setRoot(data.defaultRoot);
-      })
-      .catch(err => console.error("Failed to load chord options:", err));
-  }, []);
+    useEffect(() => {
+        async function fetchChord() {
+            try {
+                const res = await fetch(
+                    `http://localhost:18080/api/chordBuilder?root=${encodeURIComponent(
+                        root
+                    )}&mod=${mod}`
+                );
 
-  // Build chord whenever root or mod changes
-  useEffect(() => {
-    if (!root) return;
+                if (!res.ok) {
+                    throw new Error(await res.text());
+                }
 
-    fetch("http://localhost:18080/api/chord/build", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        root: root,
-        mod: selectedMod
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        setGeneralQuality(data.generalQuality);
-        setMods(data.mods);
-        setSelectedMod(data.selectedMod);
-        setChordName(data.name);
-        setRomanNumeral(data.romanNumeral);
-        setNotes(data.notes);
-      })
-      .catch(err => console.error("Failed to build chord:", err));
-  }, [root, selectedMod]);
+                const data = await res.json();
+                setChordInfo(data);
+                setRoots(data.availableRoots);
+                setError(null);
+            } catch (err) {
+                setError(err.message);
+                setChordInfo(null);
+            }
+        }
 
-  return (
-    <div className="chord-builder">
-      <h2>Chord Builder</h2>
+        fetchChord();
+    }, [root, mod]);
 
-      <div className="chord-controls">
-        {/* Root dropdown */}
-        <select value={root} onChange={e => setRoot(e.target.value)}>
-          {roots.map(note => (
-            <option key={note} value={note}>
-              {note}
-            </option>
-          ))}
-        </select>
 
-        {/* General quality display */}
-        <div className="chord-quality">
-          {generalQuality}
+    return (
+        <div style={{ border: '1px solid #ccc', borderRadius: '8px', padding: '16px', maxWidth: '300px' }}>
+            <h2 style={{ margin: '0 0 16px 0', fontSize: '18px' }}>Chord Builder</h2>
+            
+            <div style={{ marginBottom: '12px' }}>
+                <label htmlFor="root" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>
+                    Root
+                </label>
+                <select
+                    id="root"
+                    value={root}
+                    onChange={(e) => setRoot(e.target.value)}
+                    style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                >
+                    {roots.map((root) => (
+                        <option key={root} value={root}>
+                            {root}
+                        </option>
+                    ))}
+                </select>
+            </div>
+
+            {/*<div>
+                <label htmlFor="keyQuality" style={{ display: 'block', marginBottom: '4px', fontSize: '14px' }}>
+                    Key Quality
+                </label>
+                <select
+                    id="keyQuality"
+                    value={keyQuality}
+                    onChange={(e) => setKeyQuality(e.target.value)}
+                    style={{ width: '100%', padding: '8px', borderRadius: '4px', border: '1px solid #ddd' }}
+                >
+                    {keyQualities.map((quality) => (
+                        <option key={quality} value={quality}>
+                            {quality.charAt(0).toUpperCase() + quality.slice(1)}
+                        </option>
+                    ))}
+                </select>
+                {error && (
+                    <div style={{ marginTop: '12px', color: 'red' }}>
+                        {error}
+                    </div>
+                )}
+
+                {keyInfo && (
+                    <div style={{ marginTop: '16px', fontSize: '14px' }}>
+                        <strong>{keyInfo.name}</strong>
+
+                        <div>
+                            Notes: {keyInfo.notes.join(', ')}
+                        </div>
+
+                        {keyInfo.sharpsOrFlats.length > 0 && (
+                            <div>
+                                {keyInfo.isFlat ? 'Flats' : 'Sharps'}:{' '}
+                                {keyInfo.sharpsOrFlats.join(', ')}
+                            </div>
+                        )}
+                    </div>
+                )}
+            </div>*/}
         </div>
-
-        {/* Mods / extensions dropdown */}
-        <select
-          value={selectedMod}
-          onChange={e => setSelectedMod(e.target.value)}
-        >
-          {mods.map(mod => (
-            <option key={mod} value={mod}>
-              {mod}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Chord display */}
-      <div className="chord-display">
-        <h3>{chordName}</h3>
-        <p>{romanNumeral}</p>
-        <p>{notes.join(" – ")}</p>
-      </div>
-    </div>
-  );
+    );
 }

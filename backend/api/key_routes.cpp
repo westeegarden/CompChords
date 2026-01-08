@@ -17,6 +17,8 @@ void registerKeyRoutes(crow::SimpleApp& app,
     ([&state, &mutex](const crow::request& req) {
         std::lock_guard<std::mutex> lock(mutex);
 
+        auto& key = *state.activeKey;
+
         auto tonic = req.url_params.get("key");
         auto quality = req.url_params.get("quality");
 
@@ -24,8 +26,6 @@ void registerKeyRoutes(crow::SimpleApp& app,
             return crow::response(400, "Missing params");
 
         KeyService::setActiveKey(state, tonic, quality);
-
-        auto& key = *state.activeKey;
 
         crow::json::wvalue res;
         res["name"] = key.getName();

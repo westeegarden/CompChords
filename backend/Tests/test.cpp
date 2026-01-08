@@ -87,8 +87,8 @@ int main() {
     cout << "Testing Chord class...\n";
 
     //Testing chord name is correct on minor scale degree
-    if (c.getChordName() != "Emin7") {
-        cerr << "FAIL: Expected chord name Emin7, got: " << c.getChordName() << endl;
+    if (c.getName() != "Emin7") {
+        cerr << "FAIL: Expected chord name Emin7, got: " << c.getName() << endl;
         return 1;
     }
 
