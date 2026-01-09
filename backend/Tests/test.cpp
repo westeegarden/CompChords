@@ -3,6 +3,7 @@
 //
 #include "../domain/Key.h"
 #include "../domain/Chord.h"
+#include "../domain/Track.h"
 #include <iostream>
 #include <vector>
 #include <string>
@@ -139,6 +140,56 @@ int main() {
         cerr << "}\n";
         return 1;
     }
+
+    //Passed Chord tests
+    cout << "PASS\n";
+
+    // Testing Track class ==========================================================================
+    cout << "Testing Track class...\n";
+
+    Track t;
+    vector<string> testVect5 = {"C", "E", "G", "B"};
+    t.addChord("Cmaj7", "I", testVect5, 1, 1, 4);
+
+    // Testing that chord was added
+    vector<ChordEvent> testEvents = t.getChordEvents();
+
+    if (testEvents.empty()) {
+        cerr << "FAIL: No chord events found\n";
+        return 1;
+    }
+
+    // Testing each field was stored correctly
+    if (testEvents[0].chord.name != "Cmaj7") {
+        cerr << "FAIL: Expected 1st event chord name Cmaj7, got: " << testEvents[0].chord.name << endl;
+        return 1;
+    }
+
+    if (testEvents[0].chord.rna != "I") {
+        cerr << "FAIL: Expected 1st event chord RNA I, got: " << testEvents[0].chord.rna << endl;
+        return 1;
+    }
+
+    if (testEvents[0].chord.noteNames != testVect5) {
+        cerr << "FAIL: Expected 1st event chord notes {C, E, G, B}, got: " << testEvents[0].chord.noteNames.data() << endl;
+        return 1;
+    }
+
+    if (testEvents[0].measure != 1) {
+        cerr << "FAIL: Expected event on measure 1, got: measure " << testEvents[0].measure << endl;
+        return 1;
+    }
+
+    if (testEvents[0].beat != 1) {
+        cerr << "FAIL: Expected event on beat 1, got: beat " << testEvents[0].beat << endl;
+        return 1;
+    }
+
+    if (testEvents[0].duration != 4) {
+        cerr << "FAIL: Expected event duration 4, got: " << testEvents[0].duration << endl;
+        return 1;
+    }
+
     cout << "PASS\n";
     return 0;
 }
