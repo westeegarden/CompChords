@@ -36,3 +36,7 @@ void Track::addChord(const std::string &name,
 vector<ChordEvent> Track::getChordEvents() {
     return events;
 }
+
+void Track::clearChordEvents() {
+    events.clear();
+}

@@ -22,6 +22,10 @@ add_executable(crow_backend backend/main.cpp
         backend/utils/JsonUtils.h
         backend/domain/Track.cpp
         backend/domain/Track.h
+        backend/services/TrackService.cpp
+        backend/services/TrackService.h
+        backend/api/track_routes.cpp
+        backend/api/track_routes.h
 )
 target_link_libraries(crow_backend PRIVATE Crow::Crow)
 

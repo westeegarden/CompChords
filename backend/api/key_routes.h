@@ -9,7 +9,6 @@
 #include "crow.h"
 #include "../state/MusicState.h"
 #include <mutex>
-using namespace std;
 
 void registerKeyRoutes(crow::SimpleApp& app,
                        MusicState& state,

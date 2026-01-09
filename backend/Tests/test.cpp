@@ -190,6 +190,12 @@ int main() {
         return 1;
     }
 
+    // Testing clear
+    t.clearChordEvents();
+    if (!testEvents.empty()) {
+        cerr << "FAIL: Expected chord events to be cleared\n";
+    }
+
     cout << "PASS\n";
     return 0;
 }

@@ -1,17 +1,17 @@
 //
-// Created by weste on 1/6/2026.
+// Created by weste on 1/9/2026.
 //
 
-#ifndef CHORD_ROUTES_H
-#define CHORD_ROUTES_H
+#ifndef TRACK_ROUTES_H
+#define TRACK_ROUTES_H
 
 #pragma once
 #include "crow.h"
 #include "../state/MusicState.h"
 #include <mutex>
 
-void registerChordRoutes(crow::SimpleApp& app,
+void registerTrackRoutes(crow::SimpleApp& app,
                        MusicState& state,
                        mutex& mutex);
 
-#endif //CHORD_ROUTES_H
+#endif //TRACK_ROUTES_H

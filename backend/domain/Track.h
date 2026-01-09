@@ -38,6 +38,8 @@ public:
                   int duration);
 
     std::vector<ChordEvent> getChordEvents();
+
+    void clearChordEvents();
 };
 
 #endif //TRACK_H

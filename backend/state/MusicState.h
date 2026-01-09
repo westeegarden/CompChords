@@ -12,10 +12,12 @@
 // Forward declarations ONLY
 class Key;
 class Chord;
+class Track;
 
 struct MusicState {
     std::unique_ptr<Key> activeKey;
     std::unique_ptr<Chord> activeChord;
+    std::unique_ptr<Track> activeTrack;
     std::mutex mutex;
 };
 #endif //MUSICSTATE_H
