@@ -46,7 +46,7 @@ export default function KeySigSelect() {
                     <h2>Key Signature</h2>
 
                     {/* Key Center Selection */}
-                    <div className="select-row">
+                    <div className="key-select-row">
                         <FormControl sx={{ flex: 1, mr: 1 }}>
                             <InputLabel id="keyCenter-label">Key Center</InputLabel>
                             <Select
