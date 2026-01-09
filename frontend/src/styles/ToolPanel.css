@@ -18,7 +18,7 @@
 
 .tool-panel-content {
     padding: 16px;
-    background: #f5eee4; /* darker interior */
+    background: #efdcc3;
     color: #231650;
 }
 
@@ -62,4 +62,24 @@
     flex-direction: row;
     gap: 8px;
     width: fit-content;
+}
+
+.MuiMenu-paper {
+    background-color: #efdcc3 !important;
+    color: #231650;
+    border: 2px solid #231650;
+    border-radius: 12px;
+}
+
+.MuiMenuItem-root:hover {
+    background-color: #e8d7c6;
+}
+
+.MuiMenuItem-root.Mui-selected {
+    background-color: #B83A14;
+    color: #B83A14;
+}
+
+.MuiMenuItem-root.Mui-selected:hover {
+    background-color: #a03212;
 }
