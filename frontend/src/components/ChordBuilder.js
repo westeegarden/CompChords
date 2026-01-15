@@ -126,11 +126,11 @@ export default function ChordBuilder() {
                         onDragStart={handleDragStart}
                         sx={{
                             position: "relative",
-                            bgcolor: "#68a5e2",
-                            color: "#0e1114",
+                            bgcolor: "#7ea8d1",
+                            color: "#000000",
                             p: 1,
                             boxSizing: "border-box",
-                            border: "2px solid #07355f",
+                            border: "2px solid #083157",
                             borderRadius: 2,
                         }}
                     >

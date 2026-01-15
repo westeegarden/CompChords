@@ -1,5 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
+import DeleteIcon from "@mui/icons-material/Delete";
 import PianoRollGrid from "./PianoRollGrid";
 import ChordTimeline from "./ChordTimeline";
 import '../styles/Track.css';
@@ -75,47 +76,53 @@ export default function Track() {
             />
           </Box>
 
-          {/* Empty cell under keys */}
           <Box />
+          {/* Timeline */}
+          <Box sx={{ gridColumn: "2 / 3", gridRow: 2 }}>
+            <ChordTimeline
+                chordEvents={chordEvents}
+                measures={MEASURES}
+                beatsPerMeasure={BEATS_PER_MEASURE}
+                onAddChord={handleAddChord}
+                onMoveChord={moveChord}
+                onDeleteChord={deleteChord}
+            />
+          </Box>
 
-          {/* Timeline only under beat grid */}
-          <ChordTimeline
-            chordEvents={chordEvents}
-            measures={MEASURES}
-            beatsPerMeasure={BEATS_PER_MEASURE}
-            onAddChord={handleAddChord}
-            onMoveChord={moveChord}
-            onDeleteChord={deleteChord}
-          />
+          {/* Delete bin under Keys */}
+          <Box
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={(e) => {
+              const data =
+                e.dataTransfer.getData("application/chord-event");
+
+              if (!data) return;
+
+              const event = JSON.parse(data);
+              deleteChord(event.id);
+            }}
+            sx={{
+              gridColumn: "1 / 2",
+              gridRow: 2,
+              height: 60,
+              width: 40,
+              border: "2px dashed #b71c1c",
+              borderRadius: 2,
+              color: "#b71c1c",
+              display: "flex",
+              alignItems: "center",
+              alignSelf: "center",
+              justifyContent: "center",
+              justifySelf: "center",
+              fontWeight: "bold",
+              cursor: "pointer",
+              mt: 1,
+            }}
+          >
+            <DeleteIcon />
+          </Box>
         </Box>
-
-        <Box
-          onDragOver={(e) => e.preventDefault()}
-          onDrop={(e) => {
-            const data =
-              e.dataTransfer.getData("application/chord-event");
-
-            if (!data) return;
-
-            const event = JSON.parse(data);
-            deleteChord(event.id);
-          }}
-          sx={{
-            mt: 2,
-            height: 60,
-            border: "2px dashed #b71c1c",
-            borderRadius: 2,
-            color: "#b71c1c",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontWeight: "bold",
-          }}
-        >
-          Drop here to delete
-        </Box>
-
-    </Box>
+      </Box>
     </div>
   );
 }

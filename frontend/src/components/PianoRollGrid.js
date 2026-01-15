@@ -79,7 +79,7 @@ export default function PianoRollGrid({
               <Box
                 key={`${note}-${beat}`}
                 sx={{
-                  height: 24,
+                  height: 30,
                   borderBottom: "1px solid #222",
                   borderLeft:
                     beat % beatsPerMeasure === 0

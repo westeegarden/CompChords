@@ -63,7 +63,7 @@ export default function ChordTimeline({
       onDrop={handleDrop}
       sx={{
         position: "relative",
-        height: 100,
+        height: 130,
         border: "none",
         boxSizing: "border-box",
         display: "grid",

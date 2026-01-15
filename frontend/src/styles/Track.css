@@ -17,7 +17,8 @@
 
 .track-header {
     font-family: 'Fjalla One', sans-serif;
-    font-size: 60px;
+    font-weight: bold;
+    font-size: 40px;
     color: #231650;
     margin-bottom: 12px;
     text-align: right;
