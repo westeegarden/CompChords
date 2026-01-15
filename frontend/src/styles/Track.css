@@ -29,10 +29,3 @@
     display: "contents";
 }
 
-.piano-roll-grid {
-    overflow-x: auto;
-}
-
-.chord-timeline {
-    margin-bottom: 16px;
-}

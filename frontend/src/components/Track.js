@@ -34,6 +34,19 @@ export default function Track() {
     ]);
   };
 
+  const moveChord = (updatedEvent) => {
+    setChordEvents((prev) =>
+      prev.map((e) =>
+        e.id === updatedEvent.id ? updatedEvent : e
+      )
+    );
+  }
+
+  const deleteChord = (id) => {
+    setChordEvents((prev) => 
+      prev.filter((e) => e.id !== id));
+  };
+
   return (
     <div className = "track">
       <Box>
@@ -47,7 +60,7 @@ export default function Track() {
             display: "grid",
             gridTemplateColumns: `60px 1fr`,
             gridAutoRows: "min-content",
-            border: "1px solid #444",
+            border: "3px solid #231650",
             borderRadius: 2,
             overflow: "hidden",
             rowGap: 0,
@@ -71,8 +84,37 @@ export default function Track() {
             measures={MEASURES}
             beatsPerMeasure={BEATS_PER_MEASURE}
             onAddChord={handleAddChord}
+            onMoveChord={moveChord}
+            onDeleteChord={deleteChord}
           />
         </Box>
+
+        <Box
+          onDragOver={(e) => e.preventDefault()}
+          onDrop={(e) => {
+            const data =
+              e.dataTransfer.getData("application/chord-event");
+
+            if (!data) return;
+
+            const event = JSON.parse(data);
+            deleteChord(event.id);
+          }}
+          sx={{
+            mt: 2,
+            height: 60,
+            border: "2px dashed #b71c1c",
+            borderRadius: 2,
+            color: "#b71c1c",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: "bold",
+          }}
+        >
+          Drop here to delete
+        </Box>
+
     </Box>
     </div>
   );

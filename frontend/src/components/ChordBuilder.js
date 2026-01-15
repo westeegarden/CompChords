@@ -43,6 +43,23 @@ export default function ChordBuilder() {
         fetchChord();
     }, [root, mod]);
 
+    const handleDragStart = (e) => {
+        if (!chordInfo) return;
+
+        e.dataTransfer.setData(
+            "application/chord",
+            JSON.stringify(chordPayload)
+        );
+    };
+
+    const chordPayload = chordInfo
+        ? {
+              name: chordInfo.name,
+              rna: chordInfo.rna,
+              notes: chordInfo.notes,
+          }
+        : null;
+
 
     return (
         <div className="tool-panel-border-stripe">
@@ -103,18 +120,22 @@ export default function ChordBuilder() {
                     </div>
 
                     {/* Chord Name Display */}
-                    <div>
+                    <div
+                        draggable={!!chordPayload}
+                        onDragStart={handleDragStart}
+                        style={{
+                            cursor: chordPayload ? "grab" : "default",
+                        }}
+                    >
                         <TextField
                             label="Chord"
                             value={name}
                             variant="outlined"
                             fullWidth
+                            InputProps={{
+                            readOnly: true,
+                            }}
                         />
-                        {error && (
-                            <div style={{ marginTop: '12px', color: 'red' }}>
-                                {error}
-                            </div>
-                        )}
                     </div>
 
                     {/* Notes Display */}

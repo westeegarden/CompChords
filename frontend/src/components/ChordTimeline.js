@@ -5,29 +5,67 @@ export default function ChordTimeline({
   measures,
   beatsPerMeasure,
   onAddChord,
+  onMoveChord,
 }) {
   const totalBeats = measures * beatsPerMeasure;
 
   const handleDrop = (e) => {
     e.preventDefault();
 
-    const data = e.dataTransfer.getData("application/chord");
-    if (!data) return;
-
-    const chord = JSON.parse(data);
-
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const beat = Math.floor((x / rect.width) * totalBeats);
     const snappedMeasure = Math.floor(beat / beatsPerMeasure);
 
-    onAddChord({
-      measure: snappedMeasure,
-      beat: 0,
-      duration: beatsPerMeasure,
-      chord,
-    });
+    const chordEventData =
+      e.dataTransfer.getData("application/chord-event");
+
+    const chordData =
+      e.dataTransfer.getData("application/chord");
+
+    // Moving an existing chord
+    if (chordEventData) {
+      const event = JSON.parse(chordEventData);
+
+      onAddChord({
+        ...event,
+        measure: snappedMeasure,
+        beat: 0,
+      });
+
+      onMoveChord({
+        ...event,
+        measure: snappedMeasure,
+        beat: 0,
+      });
+
+      return;
+    }
+
+    // Adding new chord from builder
+    if (chordData) {
+      const chord = JSON.parse(chordData);
+
+      onAddChord({
+        measure: snappedMeasure,
+        beat: 0,
+        duration: beatsPerMeasure,
+        chord,
+      });
+    }
   };
+
+
+  const handleDragStart = (e, event) => {
+    e.dataTransfer.setData(
+      "application/chord-event",
+      JSON.stringify(event)
+    );
+
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+
 
   return (
     <Box
@@ -65,6 +103,8 @@ export default function ChordTimeline({
         return (
           <Box
             key={event.id}
+            draggable
+            onDragStart={(e) => handleDragStart(e, event)}
             sx={{
               position: "absolute",
               left: `${(startBeat / totalBeats) * 100}%`,
