@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import { getPitchClass } from "../music/pitchClass";
 
 const NOTES = [
   "B3", "Bb3", "A3", "Ab3", "G3",
@@ -11,7 +12,7 @@ export default function PianoRollGrid({
   beatsPerMeasure,
 }) {
   const totalBeats = measures * beatsPerMeasure;
-  const BLACK_KEYS = ["Db", "Eb", "Gb", "Ab", "Bb"];
+  const BLACK_KEYS = ["Db", "C#", "Eb", "D#", "Gb", "F#", "Ab", "G#", "Bb"];
 
   const isBlackKey = (note) =>
     BLACK_KEYS.includes(note.replace(/\d/, ""));
@@ -63,12 +64,14 @@ export default function PianoRollGrid({
             const active = chordEvents.some((event) => {
               const start = event.measure * beatsPerMeasure + event.beat;
               const end = start + event.duration;
-              const noteName = note.replace(/\d/, "");
+              const rowPC = getPitchClass(note);
 
               return (
                 beat >= start &&
                 beat < end &&
-                event.chord.notes.includes(noteName)
+                event.chord.notes.some(
+                  (n) => getPitchClass(n) === rowPC
+                )
               );
             });
 

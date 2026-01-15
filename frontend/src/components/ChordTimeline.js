@@ -17,21 +17,9 @@ export default function ChordTimeline({
     const beat = Math.floor((x / rect.width) * totalBeats);
     const snappedMeasure = Math.floor(beat / beatsPerMeasure);
 
-    const chordEventData =
-      e.dataTransfer.getData("application/chord-event");
-
-    const chordData =
-      e.dataTransfer.getData("application/chord");
-
-    // Moving an existing chord
+    const chordEventData = e.dataTransfer.getData("application/chord-event");
     if (chordEventData) {
       const event = JSON.parse(chordEventData);
-
-      onAddChord({
-        ...event,
-        measure: snappedMeasure,
-        beat: 0,
-      });
 
       onMoveChord({
         ...event,
@@ -41,6 +29,8 @@ export default function ChordTimeline({
 
       return;
     }
+
+    const chordData = e.dataTransfer.getData("application/chord");
 
     // Adding new chord from builder
     if (chordData) {
