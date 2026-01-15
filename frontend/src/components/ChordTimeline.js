@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Chip } from "@mui/material";
 
 export default function ChordTimeline({
   chordEvents,
@@ -63,7 +63,7 @@ export default function ChordTimeline({
       onDrop={handleDrop}
       sx={{
         position: "relative",
-        height: 80,
+        height: 100,
         border: "none",
         boxSizing: "border-box",
         display: "grid",
@@ -100,23 +100,41 @@ export default function ChordTimeline({
               left: `${(startBeat / totalBeats) * 100}%`,
               width: `${(event.duration / totalBeats) * 100}%`,
               height: "100%",
-              bgcolor: "#1976d2",
-              color: "#fff",
+              bgcolor: "#68a5e2",
+              color: "#0e1114",
               p: 1,
               boxSizing: "border-box",
               border: "2px solid #07355f",
               borderRadius: 2,
             }}
           >
-            <Typography variant="subtitle2">
+            <Typography sx ={{ 
+              fontFamily: 'Fjalla One', 
+              fontWeight: 'bold',
+              textAlign: 'center',}}
+            >
               {event.chord.name}
             </Typography>
             <Typography variant="caption">
               {event.chord.rna}
             </Typography>
-            <Typography variant="caption" display="block">
-              {event.chord.notes.join(", ")}
-            </Typography>
+            {/* Notes as chips */}
+            <Box sx={{ 
+              display: "flex", 
+              flexWrap: "wrap",
+              justifyContent: "center", 
+              mt: 0.5,
+              gap: 0.3 }}
+            >
+              {event.chord.notes.map((note) => (
+                <Chip
+                  key={note}
+                  label={note}
+                  size="small"
+                  sx={{ bgcolor: "#07355f", color: "#c9ccce", fontWeight: "bold" }}
+                />
+              ))}
+            </Box>
           </Box>
         );
       })}

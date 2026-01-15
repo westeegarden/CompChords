@@ -43,7 +43,7 @@ export default function KeySigSelect() {
 
                 {/* content */}
                 <div className="tool-panel-content">
-                    <h2>Key Signature</h2>
+                    <h2>KEY SIGNATURE</h2>
 
                     {/* Key Center Selection */}
                     <div className="key-select-row">

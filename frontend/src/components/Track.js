@@ -51,7 +51,7 @@ export default function Track() {
     <div className = "track">
       <Box>
         <div className="track-header">
-          Track
+          TRACK
         </div>
 
         {/* Shared layout grid */}

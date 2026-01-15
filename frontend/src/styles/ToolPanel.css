@@ -18,12 +18,12 @@
 
 .tool-panel-content {
     padding: 16px;
-    background: #efdcc3;
+    background: #c9ccce;
     color: #231650;
 }
 
 .tool-panel-content h2 {
-    font-family: 'Anton';
+    font-family: 'Fjalla One', sans-serif;
     display: flex;
     flex-direction: column;
     align-items: center;

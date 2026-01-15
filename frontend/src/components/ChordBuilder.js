@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
+import { TextField, Select, FormControl, InputLabel, MenuItem, Box, Typography, Chip } from '@mui/material';
 import '../styles/ToolPanel.css';
 
 export default function ChordBuilder() {
@@ -66,7 +66,7 @@ export default function ChordBuilder() {
             <div className="tool-panel">
                 {/* content */}
                 <div className="tool-panel-content">
-                    <h2>Chord Builder</h2>
+                    <h2>CHORD BUILDER</h2>
                     
                     <div className="chord-select-row" style={{ marginBottom: '12px' }}>
                         {/* Root Selection */}
@@ -119,31 +119,46 @@ export default function ChordBuilder() {
                         </FormControl>
                     </div>
 
-                    {/* Chord Name Display */}
-                    <div
+                    {/* Draggable Chord Display */}
+                    <Box
+                        key={name}
                         draggable={!!chordPayload}
                         onDragStart={handleDragStart}
-                        style={{
-                            cursor: chordPayload ? "grab" : "default",
+                        sx={{
+                            position: "relative",
+                            bgcolor: "#68a5e2",
+                            color: "#0e1114",
+                            p: 1,
+                            boxSizing: "border-box",
+                            border: "2px solid #07355f",
+                            borderRadius: 2,
                         }}
                     >
-                        <TextField
-                            label="Chord"
-                            value={name}
-                            variant="outlined"
-                            fullWidth
-                            InputProps={{
-                            readOnly: true,
-                            }}
-                        />
-                    </div>
-
-                    {/* Notes Display */}
-                    {chordInfo && (
-                        <div style={{ marginTop: '16px', fontSize: '14px' }}>
-                            <strong>Notes:</strong> {notes.join(', ')}
-                        </div>
-                    )}
+                        <Typography sx ={{ 
+                            fontFamily: 'Fjalla One', 
+                            fontWeight: 'bold',
+                            textAlign: 'center',}}
+                        >
+                            {name}
+                        </Typography>
+                        {/* Notes as chips */}
+                        <Box sx={{ 
+                            display: "flex", 
+                            flexWrap: "wrap",
+                            justifyContent: "center", 
+                            mt: 0.5,
+                            gap: 0.3 }}
+                        >
+                            {notes.map((note) => (
+                                <Chip
+                                key={note}
+                                label={note}
+                                size="small"
+                                sx={{ bgcolor: "#07355f", color: "#c9ccce", fontWeight: "bold" }}
+                                />
+                            ))}
+                        </Box>
+                    </Box>
                 </div>
             </div>
         </div>

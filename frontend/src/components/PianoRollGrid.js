@@ -85,7 +85,7 @@ export default function PianoRollGrid({
                     beat % beatsPerMeasure === 0
                       ? "2px solid #333"
                       : "1px solid #333",
-                  backgroundColor: active ? "#4caf50" : "#6e6e6e",
+                  backgroundColor: active ? "#F3742B" : "#6e6e6e",
                 }}
               />
             );
