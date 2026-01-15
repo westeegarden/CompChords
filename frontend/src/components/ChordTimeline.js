@@ -36,9 +36,12 @@ export default function ChordTimeline({
       sx={{
         position: "relative",
         height: 80,
-        border: "1px solid #444",
+        border: "none",
+        boxSizing: "border-box",
         display: "grid",
+        width: '100%',
         gridTemplateColumns: `repeat(${totalBeats}, 1fr)`,
+        bgcolor: "#444444",
       }}
     >
       {/* Beat grid */}
@@ -48,7 +51,7 @@ export default function ChordTimeline({
           sx={{
             borderLeft:
               beat % beatsPerMeasure === 0
-                ? "2px solid #555"
+                ? "2px solid #333"
                 : "1px solid #333",
           }}
         />
@@ -71,6 +74,8 @@ export default function ChordTimeline({
               color: "#fff",
               p: 1,
               boxSizing: "border-box",
+              border: "2px solid #07355f",
+              borderRadius: 2,
             }}
           >
             <Typography variant="subtitle2">

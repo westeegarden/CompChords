@@ -9,9 +9,17 @@ function App() {
   return (
     <div>
       <Header></Header>
-      <KeySigSelect />
-      <ChordBuilder />
-      <Track />
+      <div style={{ display: "flex", 
+                    flexDirection: "row", 
+                    width: "100%" }}>
+        <div>
+          <KeySigSelect />
+          <ChordBuilder />
+        </div>
+        <div style={{ flex: 1 }}>
+          <Track />
+        </div>
+      </div>
     </div>
   );
 }

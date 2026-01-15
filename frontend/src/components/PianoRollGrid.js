@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 
 const NOTES = [
-  "C4", "B3", "Bb3", "A3", "Ab3", "G3",
+  "B3", "Bb3", "A3", "Ab3", "G3",
   "Gb3", "F3", "E3", "Eb3", "D3", "Db3", "C3",
 ];
 
@@ -11,27 +11,51 @@ export default function PianoRollGrid({
   beatsPerMeasure,
 }) {
   const totalBeats = measures * beatsPerMeasure;
+  const BLACK_KEYS = ["Db", "Eb", "Gb", "Ab", "Bb"];
+
+  const isBlackKey = (note) =>
+    BLACK_KEYS.includes(note.replace(/\d/, ""));
 
   return (
     <Box
       sx={{
         display: "grid",
         gridTemplateColumns: `60px repeat(${totalBeats}, 1fr)`,
-        border: "1px solid #444",
-        mb: 2,
+        border: "none",
+        mb: 0,
       }}
     >
       {NOTES.map((note) => (
         <div key={note} style={{ display: "contents" }}>
-          {/* Note label */}
+          {/* Keys */}
           <Box
             sx={{
+              display: "flex",
+              alignItems: "stretch",
               borderBottom: "1px solid #333",
               fontSize: 12,
-              p: 0.5,
+              backgroundColor: "#fff9ec",
+              textAlign: "right",
             }}
           >
-            {note}
+            {/* Left half */}
+            <Box
+              sx={{
+                width: "50%",
+                backgroundColor: isBlackKey(note) ? "#222" : "transparent",
+              }}
+            />
+
+            {/* Right half (label area) */}
+            <Box
+              sx={{
+                width: "50%",
+                p: 0.5,
+                color: "#000",
+              }}
+            >
+              {note}
+            </Box>
           </Box>
 
           {/* Beat cells */}
@@ -56,9 +80,9 @@ export default function PianoRollGrid({
                   borderBottom: "1px solid #222",
                   borderLeft:
                     beat % beatsPerMeasure === 0
-                      ? "2px solid #555"
+                      ? "2px solid #333"
                       : "1px solid #333",
-                  backgroundColor: active ? "#4caf50" : "transparent",
+                  backgroundColor: active ? "#4caf50" : "#6e6e6e",
                 }}
               />
             );
