@@ -1,4 +1,5 @@
 import { Box, Typography, Chip } from "@mui/material";
+import { useEffect, useState, useRef } from "react";
 
 export default function ChordTimeline({
   chordEvents,
@@ -6,8 +7,11 @@ export default function ChordTimeline({
   beatsPerMeasure,
   onAddChord,
   onMoveChord,
+  onResizeChord,
 }) {
   const totalBeats = measures * beatsPerMeasure;
+  const timelineRef = useRef(null);
+  const [resizing, setResizing] = useState(null);
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -15,7 +19,8 @@ export default function ChordTimeline({
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const beat = Math.floor((x / rect.width) * totalBeats);
-    const snappedMeasure = Math.floor(beat / beatsPerMeasure);
+    const measure = Math.floor(beat / beatsPerMeasure);
+    const beatInMeasure = beat % beatsPerMeasure;
 
     const chordEventData = e.dataTransfer.getData("application/chord-event");
     if (chordEventData) {
@@ -23,8 +28,8 @@ export default function ChordTimeline({
 
       onMoveChord({
         ...event,
-        measure: snappedMeasure,
-        beat: 0,
+        measure,
+        beat: beatInMeasure,
       });
 
       return;
@@ -37,8 +42,8 @@ export default function ChordTimeline({
       const chord = JSON.parse(chordData);
 
       onAddChord({
-        measure: snappedMeasure,
-        beat: 0,
+        measure,
+        beat: beatInMeasure,
         duration: beatsPerMeasure,
         chord,
       });
@@ -56,9 +61,47 @@ export default function ChordTimeline({
   };
 
 
+  const handleResizeStart = (e, event) => {
+    e.stopPropagation();
+    e.preventDefault();
+
+    setResizing({
+      id: event.id,
+      startX: e.clientX,
+      startDuration: event.duration,
+    });
+  };
+
+  useEffect(() => {
+    if (!resizing) return;
+
+    const handleMouseMove = (e) => {
+      const deltaX = e.clientX - resizing.startX;
+
+      const beatsPerPixel =
+        totalBeats / timelineRef.current.offsetWidth;
+
+      const deltaBeats = Math.round(deltaX * beatsPerPixel);
+
+      onResizeChord(resizing.id, Math.max(1, resizing.startDuration + deltaBeats));
+    };
+
+    const handleMouseUp = () => setResizing(null);
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [resizing]);
+
+
 
   return (
     <Box
+    ref={timelineRef}
       onDragOver={(e) => e.preventDefault()}
       onDrop={handleDrop}
       sx={{
@@ -93,7 +136,7 @@ export default function ChordTimeline({
         return (
           <Box
             key={event.id}
-            draggable
+            draggable={!resizing}
             onDragStart={(e) => handleDragStart(e, event)}
             sx={{
               position: "absolute",
@@ -115,9 +158,7 @@ export default function ChordTimeline({
             >
               {event.chord.name}
             </Typography>
-            <Typography variant="caption">
-              {event.chord.rna}
-            </Typography>
+            
             {/* Notes as chips */}
             <Box sx={{ 
               display: "flex", 
@@ -135,8 +176,24 @@ export default function ChordTimeline({
                 />
               ))}
             </Box>
-          </Box>
-        );
+
+            {/* Resize handle */}
+            <Box
+              onMouseDown={(e) => handleResizeStart(e, event)}
+              sx={{
+                position: "absolute",
+                right: 0,
+                top: 0,
+                width: 8,
+                height: "100%",
+                cursor: "ew-resize",
+                backgroundColor: "rgba(0,0,0,0.15)",
+                "&:hover": {
+                  backgroundColor: "rgba(0,0,0,0.3)",
+                },
+              }}
+            />
+          </Box>);
       })}
     </Box>
   );

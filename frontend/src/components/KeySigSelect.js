@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TextField, Select, FormControl, InputLabel, MenuItem } from '@mui/material';
+import { TextField, Select, FormControl, InputLabel, MenuItem, Box, Chip } from '@mui/material';
 import '../styles/ToolPanel.css';
 
 export default function KeySigSelect() {
@@ -85,20 +85,32 @@ export default function KeySigSelect() {
 
                     {/* Key Info Display */}
                     {keyInfo && (
-                        <div style={{ marginTop: '16px', fontSize: '14px' }}>
-                            <strong>{keyInfo.name}</strong>
-
-                            <div>
-                                Notes: {keyInfo.notes.join(', ')}
-                            </div>
-
-                            {keyInfo.sharpsOrFlats.length > 0 && (
-                                <div>
-                                    {keyInfo.isFlat ? 'Flats' : 'Sharps'}:{' '}
-                                    {keyInfo.sharpsOrFlats.join(', ')}
-                                </div>
-                            )}
-                        </div>
+                    <Box sx={{ mt: 2, fontSize: 14 }}>
+                        {/* Notes */}
+                        <Box sx={{ mt: 1 }}>
+                            <Box sx={{ fontSize: 12, mb: 0.5 }}>Notes</Box>
+                            <Box
+                                sx={{
+                                display: "flex",
+                                flexWrap: "wrap",
+                                gap: 0.5,
+                                }}
+                            >
+                                {keyInfo.notes.map((note) => (
+                                <Chip
+                                    key={note}
+                                    label={note}
+                                    size="small"
+                                    sx={{
+                                        color: "#e7f0fa",
+                                        backgroundColor: "#231650",
+                                        fontWeight: "bold",
+                                    }}
+                                />
+                                ))}
+                            </Box>
+                        </Box>
+                    </Box>
                     )}
                 </div>
             </div>

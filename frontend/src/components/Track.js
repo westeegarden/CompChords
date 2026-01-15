@@ -48,6 +48,14 @@ export default function Track() {
       prev.filter((e) => e.id !== id));
   };
 
+  const resizeChord = (id, duration) => {
+    setChordEvents((prev) =>
+      prev.map((e) =>
+        e.id === id ? { ...e, duration } : e
+      )
+    );
+  };
+
   return (
     <div className = "track">
       <Box>
@@ -86,6 +94,7 @@ export default function Track() {
                 onAddChord={handleAddChord}
                 onMoveChord={moveChord}
                 onDeleteChord={deleteChord}
+                onResizeChord={resizeChord}
             />
           </Box>
 
