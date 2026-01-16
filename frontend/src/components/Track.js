@@ -3,14 +3,20 @@ import { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PianoRollGrid from "./PianoRollGrid";
 import ChordTimeline from "./ChordTimeline";
+import TrackRuler from "./TrackRuler";
+import PianoKeys from "./PianoKeys";
 import '../styles/Track.css';
 
 const MEASURES = 4;
 const BEATS_PER_MEASURE = 4;
-const KEY_WIDTH = 60;
+export const KEY_WIDTH = 60;
+export const ROW_HEIGHT = 30;
 
 export default function Track() {
   const [chordEvents, setChordEvents] = useState([]);
+  const [measures, setMeasures] = useState(4);
+  const beatsPerMeasure = 4;
+  const totalBeats = measures * beatsPerMeasure;
 
   useEffect(() => {
   setChordEvents([
@@ -63,74 +69,91 @@ export default function Track() {
           TRACK
         </div>
 
-        {/* Shared layout grid */}
+        {/* Outer track frame */}
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: `60px 1fr`,
-            gridAutoRows: "min-content",
+            gridTemplateColumns: `${KEY_WIDTH}px 1fr`,
             border: "3px solid #231650",
             borderRadius: 2,
             overflow: "hidden",
-            rowGap: 0,
+            bgcolor: "#444444",
           }}
         >
-          {/* Piano roll spans both columns */}
-          <Box sx={{ gridColumn: "1 / -1" }}>
-            <PianoRollGrid
-              chordEvents={chordEvents}
-              measures={MEASURES}
-              beatsPerMeasure={BEATS_PER_MEASURE}
-            />
-          </Box>
-
-          <Box />
-          {/* Timeline */}
-          <Box sx={{ gridColumn: "2 / 3", gridRow: 2 }}>
-            <ChordTimeline
-                chordEvents={chordEvents}
-                measures={MEASURES}
-                beatsPerMeasure={BEATS_PER_MEASURE}
-                onAddChord={handleAddChord}
-                onMoveChord={moveChord}
-                onDeleteChord={deleteChord}
-                onResizeChord={resizeChord}
-            />
-          </Box>
-
-          {/* Delete bin under Keys */}
+          {/* ================= LEFT COLUMN ================= */}
           <Box
-            onDragOver={(e) => e.preventDefault()}
-            onDrop={(e) => {
-              const data =
-                e.dataTransfer.getData("application/chord-event");
-
-              if (!data) return;
-
-              const event = JSON.parse(data);
-              deleteChord(event.id);
-            }}
             sx={{
-              gridColumn: "1 / 2",
-              gridRow: 2,
-              height: 60,
-              width: 40,
-              border: "2px dashed #b71c1c",
-              borderRadius: 2,
-              color: "#b71c1c",
-              display: "flex",
-              alignItems: "center",
-              alignSelf: "center",
-              justifyContent: "center",
-              justifySelf: "center",
-              fontWeight: "bold",
-              cursor: "pointer",
-              mt: 1,
+              display: "grid",
+              gridTemplateRows: "32px auto auto",
+              backgroundColor: "#474747",
             }}
           >
-            <DeleteIcon />
+            {/* Empty corner (aligns with ruler) */}
+            <Box />
+
+            {/* Piano keys */}
+            <PianoKeys />
+
+            {/* Delete bin */}
+            <Box
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                const data = e.dataTransfer.getData("application/chord-event");
+                if (!data) return;
+                const event = JSON.parse(data);
+                deleteChord(event.id);
+              }}
+              sx={{
+                height: 60,
+                width: 40,
+                border: "2px dashed #d64f4f",
+                borderRadius: 2,
+                color: "#d64f4f",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                justifySelf: "center",
+                cursor: "pointer",
+                mt: 1,
+              }}
+            >
+              <DeleteIcon />
+            </Box>
+          </Box>
+
+          {/* RIGHT: scrollable */}
+          <Box sx={{ overflowX: "auto" }}>
+            <Box
+              sx={{
+                minWidth: totalBeats * 80,
+                display: "grid",
+                gridTemplateRows: "32px auto auto",
+              }}
+            >
+              <TrackRuler
+                measures={measures}
+                beatsPerMeasure={beatsPerMeasure}
+                onAddMeasures={() => setMeasures(measures + 4)}
+              />
+
+              <PianoRollGrid
+                chordEvents={chordEvents}
+                measures={measures}
+                beatsPerMeasure={beatsPerMeasure}
+              />
+
+              <ChordTimeline
+                chordEvents={chordEvents}
+                measures={measures}
+                beatsPerMeasure={beatsPerMeasure}
+                onAddChord={handleAddChord}
+                onMoveChord={moveChord}
+                onResizeChord={resizeChord}
+              />
+            </Box>
           </Box>
         </Box>
+
       </Box>
     </div>
   );

@@ -21,43 +21,13 @@ export default function PianoRollGrid({
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: `60px repeat(${totalBeats}, 1fr)`,
+        gridTemplateColumns: `repeat(${totalBeats}, 1fr)`,
         border: "none",
         mb: 0,
       }}
     >
       {NOTES.map((note) => (
         <div key={note} style={{ display: "contents" }}>
-          {/* Keys */}
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "stretch",
-              borderBottom: "1px solid #333",
-              fontSize: 12,
-              backgroundColor: "#fff9ec",
-              textAlign: "right",
-            }}
-          >
-            {/* Left half */}
-            <Box
-              sx={{
-                width: "50%",
-                backgroundColor: isBlackKey(note) ? "#222" : "transparent",
-              }}
-            />
-
-            {/* Right half (label area) */}
-            <Box
-              sx={{
-                width: "50%",
-                p: 0.5,
-                color: "#000",
-              }}
-            >
-              {note}
-            </Box>
-          </Box>
 
           {/* Beat cells */}
           {Array.from({ length: totalBeats }).map((_, beat) => {
