@@ -1,6 +1,10 @@
 import { Box, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import PlayArrow from "@mui/icons-material/PlayArrow";
+import FastRewind from "@mui/icons-material/FastRewind";
+import Pause from "@mui/icons-material/Pause";
+import Download from "@mui/icons-material/Download";
 import PianoRollGrid from "./PianoRollGrid";
 import ChordTimeline from "./ChordTimeline";
 import TrackRuler from "./TrackRuler";
@@ -65,9 +69,47 @@ export default function Track() {
   return (
     <div className = "track">
       <Box>
-        <div className="track-header">
-          TRACK
-        </div>
+        <Box sx={{ 
+          display: "flex", 
+          alignItems: "center", 
+          mb: 1, }}>
+
+          <div className="track-header">
+            TRACK
+          </div>
+          <Download sx={{ 
+            marginLeft: 1, 
+            marginRight: 2, 
+            scale: 2, 
+            color: "#231650",
+            ":hover": { color: "#417291", transform: "scale(1.2)" } }} />
+          <Box sx={{
+            display: "flex", 
+            justifyContent: "center",
+            border: "3px solid #231650",
+            bgcolor: "#444444",
+            borderRadius: 2,
+           }}>
+            <FastRewind sx={{ 
+              margin: 1,
+              marginLeft: 2,
+              scale: 2, 
+              color: "#789bac",
+              ":hover": { color: "#b0c8d7" }, }} />
+
+            <PlayArrow sx={{ 
+              margin: 1, 
+              scale: 2, 
+              color: "#74b072",
+              ":hover": { color: "#c4ffc4" }, }} />
+
+            <Pause sx={{ 
+              margin: 1, 
+              scale: 2, 
+              color: "#789bac",
+              ":hover": { color: "#b0c8d7" }, }} />
+          </Box>
+        </Box>
 
         {/* Outer track frame */}
         <Box
