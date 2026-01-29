@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { getPitchClass } from "../music/pitchClass";
+import { getPitchClass } from "../res/pitchClass";
 
 const NOTES = [
   "B3", "Bb3", "A3", "Ab3", "G3",

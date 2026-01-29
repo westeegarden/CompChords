@@ -10,6 +10,8 @@ import ChordTimeline from "./ChordTimeline";
 import TrackRuler from "./TrackRuler";
 import PianoKeys from "./PianoKeys";
 import BpmSelect from "./BpmSelect";
+import {play, stop } from "../audio/transport";
+import { createTrack } from "../audio/trackEngine";
 import '../styles/Track.css';
 
 const MEASURES = 4;
@@ -38,7 +40,12 @@ export default function Track() {
       },
     },
     ]);
-    }, []);
+  }, []);
+
+  const handlePlay = () => {
+    createTrack(chordEvents)
+    play();
+  };
 
   const handleAddChord = (event) => {
     setChordEvents((prev) => [
@@ -104,7 +111,8 @@ export default function Track() {
               margin: 1, 
               scale: 2, 
               color: "#74b072",
-              ":hover": { color: "#c4ffc4" }, }} />
+              ":hover": { color: "#c4ffc4" }, }} 
+              onClick={handlePlay}/>
 
             <Pause sx={{ 
               margin: 1, 

@@ -1,7 +1,7 @@
 import { Box, TextField } from "@mui/material";
 import { useState } from "react";
 
-export default function Track() {
+export default function BpmSelect() {
   const [BPM, setBPM] = useState(120);
 
   const handleBPMChange = (tempo) => {
