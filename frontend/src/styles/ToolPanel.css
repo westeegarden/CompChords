@@ -66,14 +66,14 @@
 }
 
 .MuiMenu-paper {
-    background-color: #efdcc3 !important;
+    background-color: #c9ccce !important;
     color: #231650;
     border: 2px solid #231650;
     border-radius: 12px;
 }
 
 .MuiMenuItem-root:hover {
-    background-color: #e8d7c6;
+    background-color: #909396;
 }
 
 .MuiMenuItem-root.Mui-selected {

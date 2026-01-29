@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import PlayArrow from "@mui/icons-material/PlayArrow";
@@ -9,6 +9,7 @@ import PianoRollGrid from "./PianoRollGrid";
 import ChordTimeline from "./ChordTimeline";
 import TrackRuler from "./TrackRuler";
 import PianoKeys from "./PianoKeys";
+import BpmSelect from "./BpmSelect";
 import '../styles/Track.css';
 
 const MEASURES = 4;
@@ -19,6 +20,7 @@ export const ROW_HEIGHT = 30;
 export default function Track() {
   const [chordEvents, setChordEvents] = useState([]);
   const [measures, setMeasures] = useState(4);
+  const [BPM, setBPM] = useState(120);
   const beatsPerMeasure = 4;
   const totalBeats = measures * beatsPerMeasure;
 
@@ -69,6 +71,7 @@ export default function Track() {
   return (
     <div className = "track">
       <Box>
+        {/* Top control bar */}
         <Box sx={{ 
           display: "flex", 
           alignItems: "center", 
@@ -109,6 +112,9 @@ export default function Track() {
               color: "#789bac",
               ":hover": { color: "#b0c8d7" }, }} />
           </Box>
+
+          {/* BPM Selector */}
+          <BpmSelect/>
         </Box>
 
         {/* Outer track frame */}

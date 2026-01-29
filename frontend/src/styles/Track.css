@@ -31,3 +31,20 @@
     display: "contents";
 }
 
+.track .MuiFormControl-root {
+    margin-bottom: 2px;
+    display: flex;
+    flex-direction: column;
+}
+
+.track .MuiInputLabel-root {
+    color: #231650;
+}
+
+.track .MuiSelect-root {
+    border: transparent;
+    color: #231650;
+    min-width: max-content;
+    padding-right: 20px;
+    margin-right: 8px;
+}
