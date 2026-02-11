@@ -10,7 +10,7 @@ import ChordTimeline from "./ChordTimeline";
 import TrackRuler from "./TrackRuler";
 import PianoKeys from "./PianoKeys";
 import BpmSelect from "./BpmSelect";
-import {play, stop } from "../audio/transport";
+import {play, pause, stop } from "../audio/transport";
 import { createTrack } from "../audio/trackEngine";
 import '../styles/Track.css';
 
@@ -22,7 +22,7 @@ export const ROW_HEIGHT = 30;
 export default function Track() {
   const [chordEvents, setChordEvents] = useState([]);
   const [measures, setMeasures] = useState(4);
-  const [BPM, setBPM] = useState(120);
+  const [bpm, setBpm] = useState(120);
   const beatsPerMeasure = 4;
   const totalBeats = measures * beatsPerMeasure;
 
@@ -45,6 +45,11 @@ export default function Track() {
   const handlePlay = () => {
     createTrack(chordEvents)
     play();
+  };
+
+  const handlePause = () => {
+    pause();
+    stop();
   };
 
   const handleAddChord = (event) => {
@@ -100,12 +105,12 @@ export default function Track() {
             bgcolor: "#444444",
             borderRadius: 2,
            }}>
-            <FastRewind sx={{ 
+            {/*<FastRewind sx={{ 
               margin: 1,
               marginLeft: 2,
               scale: 2, 
               color: "#789bac",
-              ":hover": { color: "#b0c8d7" }, }} />
+              ":hover": { color: "#b0c8d7" }, }} />*/}
 
             <PlayArrow sx={{ 
               margin: 1, 
@@ -118,7 +123,8 @@ export default function Track() {
               margin: 1, 
               scale: 2, 
               color: "#789bac",
-              ":hover": { color: "#b0c8d7" }, }} />
+              ":hover": { color: "#b0c8d7" }, }}
+              onClick={handlePause} />
           </Box>
 
           {/* BPM Selector */}

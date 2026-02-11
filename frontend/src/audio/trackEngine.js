@@ -1,29 +1,35 @@
 import * as Tone from "tone";
 
+let synth;
+let part;
+
 export function createTrack(chordEvents) {
-    const synth = new Tone.PolySynth(Tone.Synth).toDestination();
-    const now = Tone.now();
+  // init synth
+  if (!synth) synth = new Tone.PolySynth(Tone.FMSynth).toDestination();
 
-    /* Helper function to convert timestamps to seconds */
-    const beatsToSeconds = (numBeats, bpm) => {
-        const beatsPerSecond = bpm / 60;
-        return numBeats / beatsPerSecond;
-    }
+  // stop Transport first
+  Tone.Transport.stop();
+  Tone.Transport.position = "0:0:0";
 
-    /* Loop through chord events and create synth voices */
-    chordEvents.forEach((chordEvent) => {
-        const bpm = Tone.getTransport().bpm.value;
-        const notes = chordEvent.chord.notes;
-        const measure = chordEvent.measure;
-        const beat = chordEvent.beat;
-        const duration = beatsToSeconds(chordEvent.duration, bpm);
-        const start = beatsToSeconds((measure * 4 + beat), bpm);
+  // dispose previous Part
+  if (part) part.dispose();
+  part = null;
 
-        /* Loop through notes individually */
-        notes.forEach((note) => {
-            const octave = "4";
-            const noteLoc = note + octave;
-            synth.triggerAttackRelease(noteLoc, duration, now + start);
-        });
-    });
+  // map chord events
+  const events = chordEvents.map(ev => ({
+    time: `${ev.measure}:${ev.beat}:0`,
+    notes: ev.chord.notes.map(n => n + "4"),
+    duration: ev.duration 
+  }));
+
+  // Grab bpm for duration calculation
+  const bpm = Tone.Transport.bpm.value;
+
+  // create Part
+  part = new Tone.Part((time, value) => {
+    const dur = value.duration * (60 / bpm);
+    synth.triggerAttackRelease(value.notes, dur, time);
+  }, events);
+
+  part.start(0); // schedule at beginning
 }

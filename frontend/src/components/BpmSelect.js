@@ -1,11 +1,13 @@
 import { Box, TextField } from "@mui/material";
 import { useState } from "react";
+import { setBPM as setTransportBPM } from "../audio/transport";
 
 export default function BpmSelect() {
-  const [BPM, setBPM] = useState(120);
+  const [BPM, setBpm] = useState(120);
 
   const handleBPMChange = (tempo) => {
-    setBPM(tempo);
+    setBpm(tempo);
+    setTransportBPM(tempo);
   };
 
   return (
