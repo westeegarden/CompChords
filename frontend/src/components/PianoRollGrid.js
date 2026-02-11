@@ -31,7 +31,7 @@ export default function PianoRollGrid({
 
           {/* Beat cells */}
           {Array.from({ length: totalBeats }).map((_, beat) => {
-            const active = chordEvents.some((event) => {
+            const matchingEvent = chordEvents.find((event) => {
               const start = event.measure * beatsPerMeasure + event.beat;
               const end = start + event.duration;
               const rowPC = getPitchClass(note);
@@ -45,6 +45,14 @@ export default function PianoRollGrid({
               );
             });
 
+            let isRoot = false;
+
+            if (matchingEvent) {
+              const rowPC = getPitchClass(note);
+              const rootPC = getPitchClass(matchingEvent.chord.notes[0]);
+              isRoot = rowPC === rootPC;
+            }
+
             return (
               <Box
                 key={`${note}-${beat}`}
@@ -55,7 +63,11 @@ export default function PianoRollGrid({
                     beat % beatsPerMeasure === 0
                       ? "2px solid #333"
                       : "1px solid #333",
-                  backgroundColor: active ? "#F3742B" : "#6e6e6e",
+                  backgroundColor: matchingEvent
+                    ? isRoot
+                      ? "#B83A14"
+                      : "#F3742B"
+                    : "#6e6e6e",
                 }}
               />
             );

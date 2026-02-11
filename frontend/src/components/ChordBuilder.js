@@ -57,6 +57,7 @@ export default function ChordBuilder() {
               name: chordInfo.name,
               rna: chordInfo.rna,
               notes: chordInfo.notes,
+              root: chordInfo.root,
           }
         : null;
 
