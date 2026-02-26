@@ -5,7 +5,7 @@ let part;
 
 export function createTrack(chordEvents) {
   // init synth
-  if (!synth) synth = new Tone.PolySynth(Tone.FMSynth).toDestination();
+  if (!synth) synth = new Tone.PolySynth(Tone.AMSynth).toDestination();
 
   // stop Transport first
   Tone.Transport.stop();

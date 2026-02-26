@@ -23,6 +23,7 @@ export default function Track() {
   const [chordEvents, setChordEvents] = useState([]);
   const [measures, setMeasures] = useState(4);
   const [bpm, setBpm] = useState(120);
+  const [isPlaying, setIsPlaying] = useState(false);
   const beatsPerMeasure = 4;
   const totalBeats = measures * beatsPerMeasure;
 
@@ -45,11 +46,13 @@ export default function Track() {
   const handlePlay = () => {
     createTrack(chordEvents)
     play();
+    setIsPlaying(true);
   };
 
   const handlePause = () => {
     pause();
     stop();
+    setIsPlaying(false);
   };
 
   const handleAddChord = (event) => {
@@ -202,6 +205,8 @@ export default function Track() {
                 chordEvents={chordEvents}
                 measures={measures}
                 beatsPerMeasure={beatsPerMeasure}
+                isPlaying={isPlaying}
+                bpm={bpm}
               />
 
               <ChordTimeline
