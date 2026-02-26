@@ -43,6 +43,22 @@ export default function Track() {
     ]);
   }, []);
 
+  useEffect(() => {
+    const handleKeydown = (e) => {
+      if (e.code === "Space") {
+        e.preventDefault();
+        if (isPlaying) {
+          handlePause();
+        } else {
+          handlePlay();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeydown);
+    return () => window.removeEventListener("keydown", handleKeydown);
+  }, [isPlaying]);
+
   const handlePlay = () => {
     createTrack(chordEvents)
     play();
