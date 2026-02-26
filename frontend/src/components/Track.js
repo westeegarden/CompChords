@@ -83,6 +83,11 @@ export default function Track() {
     );
   };
 
+  const handleEnded = () => {
+    stop();
+    setIsPlaying(false);
+  }
+
   return (
     <div className = "track">
       <Box>
@@ -207,6 +212,7 @@ export default function Track() {
                 beatsPerMeasure={beatsPerMeasure}
                 isPlaying={isPlaying}
                 bpm={bpm}
+                onEnded={handleEnded}
               />
 
               <ChordTimeline

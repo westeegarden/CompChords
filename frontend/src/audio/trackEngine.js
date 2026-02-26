@@ -33,3 +33,7 @@ export function createTrack(chordEvents) {
 
   part.start(0); // schedule at beginning
 }
+
+export function releaseAll() {
+  if (synth) synth.releaseAll();
+}

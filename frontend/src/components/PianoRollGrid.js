@@ -14,7 +14,8 @@ export default function PianoRollGrid({
   measures,
   beatsPerMeasure,
   isPlaying,
-  bpm
+  bpm,
+  onEnded
 }) {
   const totalBeats = measures * beatsPerMeasure;
   const BLACK_KEYS = ["Db", "C#", "Eb", "D#", "Gb", "F#", "Ab", "G#", "Bb"];
@@ -79,6 +80,8 @@ useEffect(() => {
 
   if (pct < 100) {
     rafRef.current = requestAnimationFrame(tick);
+  } else {
+    onEnded?.();
   }
 };
 
