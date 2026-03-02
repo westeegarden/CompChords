@@ -8,13 +8,12 @@
 #pragma once
 #include "../state/MusicState.h"
 #include <string>
-using namespace std;
 
 class KeyService {
 public:
     static void setActiveKey(MusicState& state,
-                             const string& center,
-                             const string& quality);
+                             const std::string& center,
+                             const std::string& quality);
 };
 
 #endif //KEYSERVICE_H

@@ -6,12 +6,12 @@
 #define CHORD_ROUTES_H
 
 #pragma once
-#include "crow.h"
 #include "../state/MusicState.h"
+#include "crow.h"
 #include <mutex>
 
 void registerChordRoutes(crow::SimpleApp& app,
                        MusicState& state,
-                       mutex& mutex);
+                       std::mutex& mutex);
 
 #endif //CHORD_ROUTES_H

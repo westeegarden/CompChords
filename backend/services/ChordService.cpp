@@ -4,7 +4,7 @@
 
 #include "ChordService.h"
 #include "../state/MusicState.h"
-#include "../domain/Chord.h"
+#include "../domain/ChordModel.h"
 
 void ChordService::buildChord(MusicState& state,
                               const std::string& root,

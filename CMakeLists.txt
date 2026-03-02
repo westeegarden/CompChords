@@ -2,32 +2,35 @@ cmake_minimum_required(VERSION 3.20)
 project(crow_backend)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# Find Crow library installed via vcpkg
 find_package(Crow CONFIG REQUIRED)
 
-add_executable(crow_backend backend/main.cpp
-        backend/domain/Key.h
+# Add the executable and only .cpp files
+add_executable(crow_backend
+        backend/main.cpp
         backend/domain/Key.cpp
-        backend/domain/Chord.cpp
-        backend/domain/Chord.h
-        backend/state/MusicState.h
-        backend/services/KeyService.cpp
-        backend/services/KeyService.h
-        backend/services/ChordService.cpp
-        backend/services/ChordService.h
-        backend/api/key_routes.cpp
-        backend/api/key_routes.h
-        backend/api/chord_routes.cpp
-        backend/api/chord_routes.h
-        backend/utils/JsonUtils.h
+        backend/domain/ChordModel.cpp
         backend/domain/Track.cpp
-        backend/domain/Track.h
+        backend/services/KeyService.cpp
+        backend/services/ChordService.cpp
         backend/services/TrackService.cpp
-        backend/services/TrackService.h
+        backend/api/key_routes.cpp
+        backend/api/chord_routes.cpp
         backend/api/track_routes.cpp
-        backend/api/track_routes.h
 )
+
+# Make the backend folder visible to include statements
+target_include_directories(crow_backend
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/backend
+)
+
+# Link Crow library
 target_link_libraries(crow_backend PRIVATE Crow::Crow)
 
-# Add the tests folder
+target_link_libraries(crow_backend PRIVATE Crow::Crow ws2_32 mswsock)
+
+# Optionally add tests subdirectory
 add_subdirectory(backend/tests)

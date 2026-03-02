@@ -2,8 +2,8 @@
 add_executable(Tests
         ../domain/Key.h
         ../domain/Key.cpp
-        ../domain/Chord.cpp
-        ../domain/Chord.h
+        ../domain/ChordModel.cpp
+        ../domain/ChordModel.h
         ../domain/Track.h
         ../domain/Track.cpp
         test.cpp

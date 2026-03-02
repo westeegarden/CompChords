@@ -6,6 +6,7 @@ import ChordBuilder from "./components/ChordBuilder";
 import Track from "./components/Track";
 
 function App() {
+
   return (
     <div>
       <Header></Header>

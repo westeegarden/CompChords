@@ -14,8 +14,7 @@ import {play, pause, stop } from "../audio/transport";
 import { createTrack } from "../audio/trackEngine";
 import '../styles/Track.css';
 
-const MEASURES = 4;
-const BEATS_PER_MEASURE = 4;
+
 export const KEY_WIDTH = 60;
 export const ROW_HEIGHT = 30;
 
@@ -24,6 +23,8 @@ export default function Track() {
   const [measures, setMeasures] = useState(4);
   const [bpm, setBpm] = useState(120);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [keyCenter, setKeyCenter] = useState('C');
+  const [keyQuality, setKeyQuality] = useState('major');
   const beatsPerMeasure = 4;
   const totalBeats = measures * beatsPerMeasure;
 

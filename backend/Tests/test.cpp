@@ -2,7 +2,7 @@
 // Created by weste on 1/1/2026.
 //
 #include "../domain/Key.h"
-#include "../domain/Chord.h"
+#include "../domain/ChordModel.h"
 #include "../domain/Track.h"
 #include <iostream>
 #include <vector>
@@ -82,7 +82,7 @@ int main() {
     // Testing Chords in key of C ==========================================================================
     Key k2;
     k2.setKey("C", "major");
-    Chord c;
+    ChordModel c;
     c.buildChord("E", "min7", k2);
 
     cout << "Testing Chord class...\n";

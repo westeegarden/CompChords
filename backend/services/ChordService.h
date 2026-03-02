@@ -7,14 +7,13 @@
 
 #pragma once
 #include "../state/MusicState.h"
-#include "../domain/Chord.h"
-using namespace std;
+#include "../domain/ChordModel.h"
 
 class ChordService {
 public:
     static void buildChord(MusicState& state,
-                            const string& root,
-                            const string& mod);
+                            const std::string& root,
+                            const std::string& mod);
 };
 
 #endif //CHORDSERVICE_H

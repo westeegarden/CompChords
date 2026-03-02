@@ -6,7 +6,10 @@
 #define TRACKSERVICE_H
 
 #pragma once
+#include <vector>
+#include <string>
 #include "../state/MusicState.h"
+
 
 class TrackService {
 public:

@@ -2,7 +2,7 @@
 // Created by weste on 1/4/2026.
 //
 
-#include "Chord.h"
+#include "ChordModel.h"
 #include "Key.h"
 #include <vector>
 #include <string>
@@ -14,14 +14,14 @@ using namespace std;
 /*--------Chord Class--------*/
 
 //Default constructor
-Chord::Chord() = default;
+ChordModel::ChordModel() = default;
 
 /*
  * buildChord: Constructs a chord from a given a root and quality
  * Takes: in value of root
  * Returns: Nothing
 */
-void Chord::buildChord(string rootName, string modName, Key &workingKey) {
+void ChordModel::buildChord(string rootName, string modName, Key &workingKey) {
 
     // Clearing variables
     notes.clear();
@@ -106,7 +106,7 @@ void Chord::buildChord(string rootName, string modName, Key &workingKey) {
  * @param: string quality describing mods
  * @returns: vector<int> template for note numbers
  */
-vector<int> Chord::modStringToVector(const string &mod) {
+vector<int> ChordModel::modStringToVector(const string &mod) {
     if (mod == "none") {
         return (quality == "major") ? maj : min;
     }
@@ -133,27 +133,27 @@ vector<int> Chord::modStringToVector(const string &mod) {
     return {};
 }
 
-vector<string> Chord::getAvailableMods() {
+vector<string> ChordModel::getAvailableMods() {
     return availableMods;
 }
 
-vector<vector<string>> Chord::getNoteNames() {
+vector<vector<string>> ChordModel::getNoteNames() {
     return noteNames;
 }
 
-vector<string> Chord::getNotes() {
+vector<string> ChordModel::getNotes() {
     return notes;
 }
 
-string Chord::getQuality() {
+string ChordModel::getQuality() {
     return quality;
 }
 
-string Chord::getName() {
+string ChordModel::getName() {
     return name;
 }
 
-string Chord::getRNA() {
+string ChordModel::getRNA() {
     return romanNumeral;
 }
 
