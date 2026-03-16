@@ -7,6 +7,7 @@ export default function ChordBuilder() {
     const [quality, setQuality] = useState('Major');
     const [mod, setMod] = useState('none');
     const [name, setName] = useState('Cmaj');
+    const [keySig, setKeySig] = useState(null);
     const [notes, setNotes] = useState([]);
     const [roots, setRoots] = useState([]);
     const [mods, setMods] = useState([]);
@@ -33,6 +34,7 @@ export default function ChordBuilder() {
                 setMods(data.availableMods);
                 setName(data.name);
                 setNotes(data.notes);
+                setKeySig(data.key);
                 setError(null);
             } catch (err) {
                 setError(err.message);
@@ -58,6 +60,7 @@ export default function ChordBuilder() {
               rna: chordInfo.rna,
               notes: chordInfo.notes,
               root: chordInfo.root,
+              key: chordInfo.key,
           }
         : null;
 

@@ -1,5 +1,14 @@
 import { Box, Typography, Chip } from "@mui/material";
 import { useEffect, useState, useRef } from "react";
+import { getPitchClass } from "../res/pitchClass";
+
+function getKeyColorFromPitchClass(pc, isMinor) {
+  const hue = (pc % 12) * 30; // evenly spaced
+  const saturation = 70;
+  const lightness = isMinor ? 35 : 55;
+
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
 
 export default function ChordTimeline({
   chordEvents,
@@ -45,7 +54,10 @@ export default function ChordTimeline({
         measure,
         beat: beatInMeasure,
         duration: beatsPerMeasure,
-        chord,
+        chord: {
+          ...chord,
+          rna: chord.rna,
+        },
       });
     }
   };
@@ -133,67 +145,120 @@ export default function ChordTimeline({
         const startBeat =
           event.measure * beatsPerMeasure + event.beat;
 
+        const keyString = event.chord?.key ?? "C Major";
+        const tonic = keyString.split(" ")[0];
+        const pitchClass = getPitchClass(tonic);
+        const isMinor = keyString.includes("minor");
+        const keyColor = getKeyColorFromPitchClass(pitchClass, isMinor);
         return (
           <Box
             key={event.id}
-            draggable={!resizing}
-            onDragStart={(e) => handleDragStart(e, event)}
             sx={{
               position: "absolute",
               left: `${(startBeat / totalBeats) * 100}%`,
               width: `${(event.duration / totalBeats) * 100}%`,
               height: "100%",
-              bgcolor: "#68a5e2",
-              color: "#0e1114",
-              p: 1,
-              boxSizing: "border-box",
-              border: "2px solid #07355f",
-              borderRadius: 2,
             }}
           >
-            <Typography sx ={{ 
-              fontFamily: 'Fjalla One', 
-              fontWeight: 'bold',
-              textAlign: 'center',}}
+            {/* MAIN CHORD BOX */}
+            <Box
+              draggable={!resizing}
+              onDragStart={(e) => handleDragStart(e, event)}
+              sx={{
+                height: "85%",
+                bgcolor: "#68a5e2",
+                color: "#0e1114",
+                p: 1,
+                boxSizing: "border-box",
+                border: "2px solid #07355f",
+                borderRadius: "8px 8px 0 0",
+              }}
             >
-              {event.chord.name}
-            </Typography>
-            
-            {/* Notes as chips */}
-            <Box sx={{ 
-              display: "flex", 
-              flexWrap: "wrap",
-              justifyContent: "center", 
-              mt: 0.5,
-              gap: 0.3 }}
-            >
-              {event.chord.notes.map((note) => (
-                <Chip
-                  key={note}
-                  label={note}
-                  size="small"
-                  sx={{ bgcolor: "#07355f", color: "#c9ccce", fontWeight: "bold" }}
-                />
-              ))}
+              {/* Chord name */}
+              <Typography
+                sx={{
+                  fontFamily: "Fjalla One",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                {event.chord.name}
+              </Typography>
+
+              {/* Chord RNA */}
+              <Typography
+                sx={{
+                  fontFamily: "Fjalla One",
+                  fontWeight: "bold",
+                  textAlign: "center",
+                }}
+              >
+                {event.chord.rna}
+              </Typography>
+
+              {/* Notes */}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  justifyContent: "center",
+                  mt: 0.5,
+                  gap: 0.3,
+                }}
+              >
+                {event.chord.notes.map((note) => (
+                  <Chip
+                    key={note}
+                    label={note}
+                    size="small"
+                    sx={{
+                      bgcolor: "#07355f",
+                      color: "#c9ccce",
+                      fontWeight: "bold",
+                    }}
+                  />
+                ))}
+              </Box>
+
+              {/* Resize handle */}
+              <Box
+                onMouseDown={(e) => handleResizeStart(e, event)}
+                sx={{
+                  position: "absolute",
+                  right: 0,
+                  top: 0,
+                  width: 8,
+                  height: "85%",
+                  cursor: "ew-resize",
+                  backgroundColor: "rgba(0,0,0,0.15)",
+                  "&:hover": {
+                    backgroundColor: "rgba(0,0,0,0.3)",
+                  },
+                }}
+              />
             </Box>
 
-            {/* Resize handle */}
+            {/* KEY BAR */}
             <Box
-              onMouseDown={(e) => handleResizeStart(e, event)}
               sx={{
-                position: "absolute",
-                right: 0,
-                top: 0,
-                width: 8,
-                height: "100%",
-                cursor: "ew-resize",
-                backgroundColor: "rgba(0,0,0,0.15)",
-                "&:hover": {
-                  backgroundColor: "rgba(0,0,0,0.3)",
-                },
+                height: "15%",
+                bgcolor: keyColor,
+                color: "#000000",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "2px solid #07355f",
+                borderTop: "none",
+                borderRadius: "0 0 8px 8px",
+                fontFamily: "Fjalla One",
+                fontWeight: "bold",
+                fontSize: 12,
               }}
-            />
-          </Box>);
+            >
+              {event.chord.key}
+            </Box>
+          </Box>
+        );
       })}
     </Box>
   );

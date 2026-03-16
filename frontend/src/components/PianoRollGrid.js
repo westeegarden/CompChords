@@ -9,85 +9,71 @@ const NOTES = [
   "Gb3", "F3", "E3", "Eb3", "D3", "Db3", "C3",
 ];
 
+const BLACK_KEYS = ["Db", "C#", "Eb", "D#", "Gb", "F#", "Ab", "G#", "Bb"];
+const isBlackKey = (note) => BLACK_KEYS.includes(note.replace(/\d/, ""));
+
 export default function PianoRollGrid({
   chordEvents,
   measures,
   beatsPerMeasure,
   isPlaying,
   bpm,
-  onEnded
+  onEnded,
 }) {
   const totalBeats = measures * beatsPerMeasure;
-  const BLACK_KEYS = ["Db", "C#", "Eb", "D#", "Gb", "F#", "Ab", "G#", "Bb"];
-  const isBlackKey = (note) =>
-    BLACK_KEYS.includes(note.replace(/\d/, ""));
-  const isInKeySignature = (note) =>
-    keySigNotes.includes(note.replace(/\d/, ""));
 
-  const [keySigNotes, setKeySigNotes] = useState([]);
-  const [keyCenter, setKeyCenter] = useState('C');
-  const [keyQuality, setKeyQuality] = useState('major');
-  const [error, setError] = useState(null);
+  // Map from chordEvent id -> array of pitch class strings in its key
+  const [keySigMap, setKeySigMap] = useState({});
 
   const [cursorPercent, setCursorPercent] = useState(0);
   const rafRef = useRef(null);
 
+  // Fetch key sig notes for each unique key found in chordEvents
   useEffect(() => {
-    async function fetchKeySig() {
-      try {
+    const uniqueKeys = [...new Set(chordEvents.map((e) => e.chord.key).filter(Boolean))];
+
+    Promise.all(
+      uniqueKeys.map(async (keyString) => {
+        const tonic = keyString.split(" ")[0];
+        const quality = keyString.toLowerCase().includes("minor") ? "minor" : "major";
         const res = await fetch(
-           `http://localhost:18080/api/keySig?key=${encodeURIComponent(
-              keyCenter
-            )}&quality=${keyQuality}`
+          `http://localhost:18080/api/keySig?key=${encodeURIComponent(tonic)}&quality=${quality}`
         );
-
-        if (!res.ok) {
-          throw new Error(await res.text());
-        }
-
+        if (!res.ok) throw new Error(await res.text());
         const data = await res.json();
-        setKeySigNotes(data.notes || []);
-        setKeyCenter(data.keyCenter || 'C');
-        setKeyQuality(data.quality || 'major');
-        setError(null);
-      } catch (err) {
-        setError(err.message);
-        setKeySigNotes([]);
-      }
+        return [keyString, data.notes || []];
+      })
+    )
+      .then((entries) => setKeySigMap(Object.fromEntries(entries)))
+      .catch((err) => console.error("keySig fetch failed:", err));
+  }, [chordEvents]);
+
+  useEffect(() => {
+    const secondsPerBeat = 60 / bpm;
+    const totalDuration = totalBeats * secondsPerBeat;
+  }, [bpm, totalBeats]);
+
+  useEffect(() => {
+    if (!isPlaying) {
+      cancelAnimationFrame(rafRef.current);
+      setCursorPercent(0);
+      return;
     }
 
-    fetchKeySig();
-  }, []);
+    const tick = () => {
+      const currentBeat = Tone.Transport.ticks / Tone.Transport.PPQ;
+      const pct = Math.min((currentBeat / totalBeats) * 100, 100);
+      setCursorPercent(pct);
+      if (pct < 100) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        onEnded?.();
+      }
+    };
 
-  const totalDurationRef = useRef(0);
-
-useEffect(() => {
-  const secondsPerBeat = 60 / bpm;
-  totalDurationRef.current = totalBeats * secondsPerBeat;
-}, [bpm, totalBeats]);
-
-useEffect(() => {
-  if (!isPlaying) {
-    cancelAnimationFrame(rafRef.current);
-    setCursorPercent(0);
-    return;
-  }
-
-  const tick = () => {
-  const currentBeat = Tone.Transport.ticks / Tone.Transport.PPQ;
-  const pct = Math.min((currentBeat / totalBeats) * 100, 100);
-  setCursorPercent(pct);
-
-  if (pct < 100) {
     rafRef.current = requestAnimationFrame(tick);
-  } else {
-    onEnded?.();
-  }
-};
-
-  rafRef.current = requestAnimationFrame(tick);
-  return () => cancelAnimationFrame(rafRef.current);
-}, [isPlaying]); 
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [isPlaying]);
 
   return (
     <Box sx={{ position: "relative", height: NOTES.length * ROW_HEIGHT }}>
@@ -109,7 +95,7 @@ useEffect(() => {
         }}
       />
 
-      {/* Original grid */}
+      {/* Grid */}
       <Box
         sx={{
           display: "grid",
@@ -133,10 +119,16 @@ useEffect(() => {
               });
 
               let isRoot = false;
+              let isInKey = false;
+
               if (matchingEvent) {
                 const rowPC = getPitchClass(note);
                 const rootPC = getPitchClass(matchingEvent.chord.notes[0]);
                 isRoot = rowPC === rootPC;
+
+                // Look up this chord's key sig from the map
+                const keySigNotes = keySigMap[matchingEvent.chord.key] ?? [];
+                isInKey = keySigNotes.includes(note.replace(/\d/, ""));
               }
 
               return (
@@ -152,7 +144,7 @@ useEffect(() => {
                     backgroundColor: matchingEvent
                       ? isRoot
                         ? "#B83A14"
-                        : isInKeySignature(note)
+                        : isInKey
                         ? "#F3742B"
                         : "#FED172"
                       : isBlackKey(note)
