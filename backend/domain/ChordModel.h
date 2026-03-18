@@ -56,7 +56,7 @@ protected:
                                 "9", "7b9", "7#9", "7#11", "6"};
 
     //Vector containing names of minor quality mods
-    std::vector<std::string> minorMods = {"none", "dim", "min7", "min7b5", "dim7", "min9", "minb9", "min11", "min6"};
+    std::vector<std::string> minorMods = {"none", "7", "dim", "min7", "min7b5", "dim7", "min9", "minb9", "min11", "min6"};
 
     //Vector containing properties of each note
     std::vector<std::vector<std::string>> noteNames = {{"A"}, {"A#", "Bb"}, {"B"}, {"C"}, {"C#", "Db"},

@@ -21,6 +21,38 @@ export default function ChordTimeline({
   const totalBeats = measures * beatsPerMeasure;
   const timelineRef = useRef(null);
   const [resizing, setResizing] = useState(null);
+  const [keySigMap, setKeySigMap] = useState({});
+
+  useEffect(() => {
+    const uniqueKeys = [...new Set(chordEvents.map((e) => e.chord.key).filter(Boolean))];
+
+    Promise.all(
+      uniqueKeys.map(async (keyString) => {
+        const tonic = keyString.split(" ")[0];
+        const quality = keyString.toLowerCase().includes("minor") ? "minor" : "major";
+        const res = await fetch(
+          `http://localhost:18080/api/keySig?key=${encodeURIComponent(tonic)}&quality=${quality}`
+        );
+        if (!res.ok) throw new Error(await res.text());
+        const data = await res.json();
+        return [keyString, data.notes || []];
+      })
+    )
+      .then((entries) => setKeySigMap(Object.fromEntries(entries)))
+      .catch((err) => console.error("keySig fetch failed:", err));
+  }, [chordEvents]);
+
+  // Score helper
+  function getChordScore(event) {
+    const keySigNotes = keySigMap[event.chord.key] ?? [];
+    if (keySigNotes.length === 0) return null; // still loading
+
+    const outOfKey = event.chord.notes.filter(
+      (note) => !keySigNotes.includes(note.replace(/\d/, ""))
+    ).length;
+
+    return Math.max(0, 5 - outOfKey);
+  }
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -185,16 +217,25 @@ export default function ChordTimeline({
                 {event.chord.name}
               </Typography>
 
-              {/* Chord RNA */}
-              <Typography
-                sx={{
-                  fontFamily: "Fjalla One",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                {event.chord.rna}
-              </Typography>
+              {/* Score */}
+              {(() => {
+                const score = getChordScore(event);
+                return score !== null ? (
+                  <Typography
+                    sx={{
+                      fontFamily: "Fjalla One",
+                      fontWeight: "bold",
+                      textAlign: "center",
+                      fontSize: 16,
+                      color: score === 5 ? "#173d27"
+                          : score >= 3 ? "#9b792a"
+                          : "#e74c3c",
+                    }}
+                  >
+                    ★ {score}/5
+                  </Typography>
+                ) : null;
+              })()}
 
               {/* Notes */}
               <Box
