@@ -2,8 +2,8 @@ import { Box } from "@mui/material";
 import { ROW_HEIGHT, KEY_WIDTH } from "./Track";
 
 const NOTES = [
-  "B3", "Bb3", "A3", "Ab3", "G3",
-  "Gb3", "F3", "E3", "Eb3", "D3", "Db3", "C3",
+  "B", "Bb", "A", "Ab", "G",
+  "Gb", "F", "E", "Eb", "D", "Db", "C",
 ];
 
 const BLACK_KEYS = ["Db", "C#", "Eb", "D#", "Gb", "F#", "Ab", "G#", "Bb"];

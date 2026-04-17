@@ -11,7 +11,7 @@ import TrackRuler from "./TrackRuler";
 import PianoKeys from "./PianoKeys";
 import BpmSelect from "./BpmSelect";
 import {play, pause, stop } from "../audio/transport";
-import { createTrack } from "../audio/trackEngine";
+import { createTrack, downloadMidi } from "../audio/trackEngine";
 import '../styles/Track.css';
 
 
@@ -122,7 +122,8 @@ export default function Track() {
             marginRight: 2, 
             scale: 2, 
             color: "#231650",
-            ":hover": { color: "#417291", transform: "scale(1.2)" } }} />
+            ":hover": { color: "#417291", transform: "scale(1.2)" } }} 
+            onClick={() => downloadMidi(chordEvents)}/>
           <Box sx={{
             display: "flex", 
             justifyContent: "center",

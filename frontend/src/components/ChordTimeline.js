@@ -228,7 +228,7 @@ export default function ChordTimeline({
                       textAlign: "center",
                       fontSize: 16,
                       color: score === 5 ? "#173d27"
-                          : score >= 3 ? "#9b792a"
+                          : score >= 3 ? "#000000"
                           : "#e74c3c",
                     }}
                   >
