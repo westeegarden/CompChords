@@ -6,6 +6,8 @@ import ChordBuilder from "./components/ChordBuilder";
 import Track from "./components/Track";
 
 function App() {
+  const [keyCenter, setKeyCenter] = React.useState("C");
+  const [keyQuality, setKeyQuality] = React.useState("major");
 
   return (
     <div>
@@ -15,8 +17,15 @@ function App() {
                     width: "100%",
                     height: "100%" }}>
         <div style={{ height: "100%" }}>
-          <KeySigSelect />
-          <ChordBuilder />
+          <KeySigSelect
+            keyCenter={keyCenter}
+            keyQuality={keyQuality}
+            onKeyChange={(center, quality) => {
+              setKeyCenter(center);
+              setKeyQuality(quality);
+            }}
+          />
+          <ChordBuilder keyCenter={keyCenter} keyQuality={keyQuality} />
         </div>
         <div style={{ flex: 1 }}>
           <Track />

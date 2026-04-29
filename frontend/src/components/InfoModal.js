@@ -26,7 +26,7 @@ function AccordionItem({ question, answer }) {
 const FAQ = [
     {
         question: "How to get started",
-        answer: "To get started, choose a key signature to write your chord progression in using the key signature selector on the left. Next build a chord using the chord builder. Feel free to experiment, there are no 'wrong' chords! To start writing your progression, drag the chord from the chord builder onto the track on the right, and press the play button to hear it.",
+        answer: "To get started, choose a key signature to write your chord progression in using the key signature selector on the left. Next build a chord using the chord builder. Feel free to experiment, there are no 'wrong' chords! To start writing your progression, drag the chord from the chord builder onto the track on the right, and press the play button to hear it. Playback start/stop can also be controlled with the spacebar.",
     },
     {
         question: "Understanding the Key Signature Selector",
@@ -34,19 +34,26 @@ const FAQ = [
     },
     {
         question: "Understanding the Chord Builder",
-        answer: "To build a chord to add to your progression, start by selecting a root note using the 'root' dropdown. Once a root is chosen, a 'general quality' is displayed. This is a generalization of the type of chord you will be building, not a technical specification. 'Major' means the chord will have a brighter sound, 'minor' means the chord will have a darker sound. After taking note of the general quality, you're ready to complete your chord by selecting from the 'mods/extensions' dropdown. Again, feel free to experiment, there are no 'wrong' chords! Now the chord name and the notes that make up the chord are displayed in the blue box below the dropdowns. Drag and drop this onto the bottom section of the track and you're good to go!",
+        answer: "To build a chord to add to your progression, start by selecting a root note using the 'root' dropdown. Once a root is chosen, a 'general character' is displayed. This is a generalization of the type of chord you will be building, not a technical specification. 'Major' means the chord will have a brighter sound, 'minor' means the chord will have a darker sound. After taking note of the general character, you're ready to complete your chord by selecting from the 'mods/extensions' dropdown. Again, feel free to experiment, there are no 'wrong' chords! Now the chord name and the notes that make up the chord are displayed in the blue box below the dropdowns. Drag and drop this onto the bottom section of the track and you're good to go!",
     },
     {
-        question: "Understanding the Piano Roll",
-        answer: "The piano roll consists of two parts, the piano roll and the chord timeline. We will start with the chord timeline. This is where you arrange you chord progression. Chords can be dragged to any position, resized, or dragged to the trash can to be deleted.",
+        question: "Understanding the Track",
+        answer: "The track component consists of two parts, the piano roll and the chord timeline. We will start with the chord timeline. This is where you arrange you chord progression. Chords can be dragged to any position, resized, or dragged to the trash can to be deleted. The piano roll displays the notes in your progression for reference. Try playing the displayed notes at different places on a piano keyboard to see how inversions of the chord sound! If you want to paste your progression directly into a DAW, click the download button to export a midi file.",
+    },
+    {        question: "Understanding Piano Roll Note Color Coding",
+        answer: "Notes in each chord are color coded to convey their relationship with the chord and key. The root note of each chord is colored red, this is the home base of the chord. Other notes in the chord are colored orange. If a note is included in a chord but is outside of the key signature, it is colored yellow.",
+    },
+    {
+        question: "Understanding Chord Scoring",
+        answer: "Each built chord is given a score based on how well it fits within the selected key signature. A lower score does not necessarily mean a chord is a poor choice. In blues, the dominant 7th chord is used extensively and is crucial to the sound. This will result in less than perfect scores in CompChords because of the flat 7th, which is okay! The score is a good metric to guage how much tension a chord will bring to the progression.",
     },
     {
         question: "Key Changes",
-        answer: "The playback cursor indicates the current position in the timeline.",
+        answer: "A good way to make your progression more interesting is to implement key signature changes. Changing the key signature sets you up with a whole new set of notes and chords to work with. Changing keys in CompChords is as east as it sounds, simply select a new key in the key signature selector, and the chord builder will automatically update. You can track key changes by looking at the key signature bar at the bottom of chord objects in the timeline.",
     },
     {
         question: "Example Chord Progressions",
-        answer: "Your progress is automatically saved in your browser's local storage. You can clear it by clearing your browser data.",
+        answer: "Here are some examples of chord progressions to get you started. One of the most common cadential movements is the II-V-I (2-5-1).",
     }
 ];
 

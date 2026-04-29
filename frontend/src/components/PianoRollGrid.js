@@ -128,7 +128,7 @@ export default function PianoRollGrid({
 
                 // Look up this chord's key sig from the map
                 const keySigNotes = keySigMap[matchingEvent.chord.key] ?? [];
-                isInKey = keySigNotes.includes(note.replace(/\d/, ""));
+                isInKey = keySigNotes.some((keySigNote) => getPitchClass(keySigNote) === rowPC);
               }
 
               return (

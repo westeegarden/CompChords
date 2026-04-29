@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { TextField, Select, FormControl, InputLabel, MenuItem, Box, Typography, Chip } from '@mui/material';
 import '../styles/ToolPanel.css';
 
-export default function ChordBuilder() {
+export default function ChordBuilder({ keyCenter, keyQuality }) {
     const [root, setRoot] = useState('C');
     const [quality, setQuality] = useState('Major');
     const [mod, setMod] = useState('none');
@@ -14,20 +14,32 @@ export default function ChordBuilder() {
     const [chordInfo, setChordInfo] = useState(null);
     const [error, setError] = useState(null);
 
+    const keyCenterRef = useRef(keyCenter);
+    const keyQualityRef = useRef(keyQuality);
+
+    // Keep refs in sync with props synchronously
     useEffect(() => {
+        keyCenterRef.current = keyCenter;
+        keyQualityRef.current = keyQuality;
+        setRoot(keyCenter);
+        setMod('none');
+    }, [keyCenter, keyQuality]);
+
+    // Fetch whenever root or mod changes — reads key from refs, never stale
+    useEffect(() => {
+        const controller = new AbortController();
+
         async function fetchChord() {
+            const currentKey = keyCenterRef.current;
+            const currentQuality = keyQualityRef.current;
             try {
                 const res = await fetch(
-                    `http://localhost:18080/api/chordBuilder?root=${encodeURIComponent(
-                        root
-                    )}&mod=${mod}`
+                    `http://localhost:18080/api/chordBuilder?root=${encodeURIComponent(root)}&mod=${mod}&key=${encodeURIComponent(currentKey)}&quality=${currentQuality}`,
+                    { signal: controller.signal }
                 );
-
-                if (!res.ok) {
-                    throw new Error(await res.text());
-                }
-
+                if (!res.ok) throw new Error(await res.text());
                 const data = await res.json();
+                console.log('[FETCH RESPONSE] availableRoots:', data.availableRoots, 'key:', data.key);
                 setChordInfo(data);
                 setRoots(data.availableRoots);
                 setQuality(data.quality);
@@ -37,21 +49,25 @@ export default function ChordBuilder() {
                 setKeySig(data.key);
                 setError(null);
             } catch (err) {
+                if (err.name === 'AbortError') return; // discard stale response, do nothing
                 setError(err.message);
                 setChordInfo(null);
             }
         }
 
         fetchChord();
+        return () => controller.abort();
     }, [root, mod]);
 
     const handleDragStart = (e) => {
         if (!chordInfo) return;
-
-        e.dataTransfer.setData(
-            "application/chord",
-            JSON.stringify(chordPayload)
-        );
+        e.dataTransfer.setData("application/chord", JSON.stringify({
+            name: chordInfo.name,
+            rna: chordInfo.rna,
+            notes: chordInfo.notes,
+            root: chordInfo.root,
+            key: chordInfo.key,
+        }));
     };
 
     const chordPayload = chordInfo
@@ -64,16 +80,13 @@ export default function ChordBuilder() {
           }
         : null;
 
-
     return (
         <div className="tool-panel-border-stripe">
             <div className="tool-panel">
-                {/* content */}
                 <div className="tool-panel-content">
                     <h2>CHORD BUILDER</h2>
                     
                     <div className="chord-select-row" style={{ marginBottom: '12px' }}>
-                        {/* Root Selection */}
                         <FormControl fullWidth>
                             <InputLabel id="root-label">Root</InputLabel>
                             <Select
@@ -91,9 +104,8 @@ export default function ChordBuilder() {
                             </Select>
                         </FormControl>
 
-                        {/* General Quality Display */}
                         <TextField
-                            label="General Quality"
+                            label="General Character"
                             value={quality}
                             variant="outlined"
                             fullWidth
@@ -104,7 +116,6 @@ export default function ChordBuilder() {
                             </div>
                         )}
 
-                        {/* Mod Selection */}
                         <FormControl fullWidth>
                             <InputLabel id="mod-label">Mods/Extensions</InputLabel>
                             <Select
@@ -123,7 +134,6 @@ export default function ChordBuilder() {
                         </FormControl>
                     </div>
 
-                    {/* Draggable Chord Display */}
                     <Box
                         key={name}
                         draggable={!!chordPayload}
@@ -138,14 +148,13 @@ export default function ChordBuilder() {
                             borderRadius: 2,
                         }}
                     >
-                        <Typography sx ={{ 
+                        <Typography sx={{ 
                             fontFamily: 'Fjalla One', 
                             fontWeight: 'bold',
                             textAlign: 'center',}}
                         >
                             {name}
                         </Typography>
-                        {/* Notes as chips */}
                         <Box sx={{ 
                             display: "flex", 
                             flexWrap: "wrap",
@@ -155,10 +164,10 @@ export default function ChordBuilder() {
                         >
                             {notes.map((note) => (
                                 <Chip
-                                key={note}
-                                label={note}
-                                size="small"
-                                sx={{ bgcolor: "#07355f", color: "#c9ccce", fontWeight: "bold" }}
+                                    key={note}
+                                    label={note}
+                                    size="small"
+                                    sx={{ bgcolor: "#07355f", color: "#c9ccce", fontWeight: "bold" }}
                                 />
                             ))}
                         </Box>

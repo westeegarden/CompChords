@@ -106,146 +106,148 @@ export default function Track() {
   }
 
   return (
-    <div className = "track">
-      <Box>
-        {/* Top control bar */}
-        <Box sx={{ 
-          display: "flex", 
-          alignItems: "center", 
-          mb: 1, }}>
-
-          <div className="track-header">
-            TRACK
-          </div>
-          <Download sx={{ 
-            marginLeft: 1, 
-            marginRight: 2, 
-            scale: 2, 
-            color: "#231650",
-            ":hover": { color: "#417291", transform: "scale(1.2)" } }} 
-            onClick={() => downloadMidi(chordEvents)}/>
-          <Box sx={{
+    <div className = "track-border-stripe">
+      <div className = "track">
+        <Box>
+          {/* Top control bar */}
+          <Box sx={{ 
             display: "flex", 
-            justifyContent: "center",
-            border: "3px solid #231650",
-            bgcolor: "#444444",
-            borderRadius: 2,
-           }}>
-            {/*<FastRewind sx={{ 
-              margin: 1,
-              marginLeft: 2,
-              scale: 2, 
-              color: "#789bac",
-              ":hover": { color: "#b0c8d7" }, }} />*/}
+            alignItems: "center", 
+            mb: 1, }}>
 
-            <PlayArrow sx={{ 
-              margin: 1, 
+            <div className="track-header">
+              TRACK
+            </div>
+            <Download sx={{ 
+              marginLeft: 1, 
+              marginRight: 2, 
               scale: 2, 
-              color: "#74b072",
-              ":hover": { color: "#c4ffc4" }, }} 
-              onClick={handlePlay}/>
+              color: "#231650",
+              ":hover": { color: "#417291", transform: "scale(1.2)" } }} 
+              onClick={() => downloadMidi(chordEvents)}/>
+            <Box sx={{
+              display: "flex", 
+              justifyContent: "center",
+              border: "3px solid #231650",
+              bgcolor: "#444444",
+              borderRadius: 2,
+            }}>
+              {/*<FastRewind sx={{ 
+                margin: 1,
+                marginLeft: 2,
+                scale: 2, 
+                color: "#789bac",
+                ":hover": { color: "#b0c8d7" }, }} />*/}
 
-            <Pause sx={{ 
-              margin: 1, 
-              scale: 2, 
-              color: "#789bac",
-              ":hover": { color: "#b0c8d7" }, }}
-              onClick={handlePause} />
+              <PlayArrow sx={{ 
+                margin: 1, 
+                scale: 2, 
+                color: "#74b072",
+                ":hover": { color: "#c4ffc4" }, }} 
+                onClick={handlePlay}/>
+
+              <Pause sx={{ 
+                margin: 1, 
+                scale: 2, 
+                color: "#789bac",
+                ":hover": { color: "#b0c8d7" }, }}
+                onClick={handlePause} />
+            </Box>
+
+            {/* BPM Selector */}
+            <BpmSelect/>
           </Box>
 
-          {/* BPM Selector */}
-          <BpmSelect/>
-        </Box>
-
-        {/* Outer track frame */}
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: `${KEY_WIDTH}px 1fr`,
-            border: "3px solid #231650",
-            borderRadius: 2,
-            overflow: "hidden",
-            bgcolor: "#444444",
-          }}
-        >
-          {/* ================= LEFT COLUMN ================= */}
+          {/* Outer track frame */}
           <Box
             sx={{
               display: "grid",
-              gridTemplateRows: "32px auto auto",
-              backgroundColor: "#474747",
+              gridTemplateColumns: `${KEY_WIDTH}px 1fr`,
+              border: "3px solid #231650",
+              borderRadius: 2,
+              overflow: "hidden",
+              bgcolor: "#444444",
             }}
           >
-            {/* Empty corner (aligns with ruler) */}
-            <Box />
-
-            {/* Piano keys */}
-            <PianoKeys />
-
-            {/* Delete bin */}
-            <Box
-              onDragOver={(e) => e.preventDefault()}
-              onDrop={(e) => {
-                const data = e.dataTransfer.getData("application/chord-event");
-                if (!data) return;
-                const event = JSON.parse(data);
-                deleteChord(event.id);
-              }}
-              sx={{
-                height: 60,
-                width: 40,
-                border: "2px dashed #d64f4f",
-                borderRadius: 2,
-                color: "#d64f4f",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                justifySelf: "center",
-                cursor: "pointer",
-                mt: 1,
-              }}
-            >
-              <DeleteIcon />
-            </Box>
-          </Box>
-
-          {/* RIGHT: scrollable */}
-          <Box sx={{ overflowX: "auto" }}>
+            {/* ================= LEFT COLUMN ================= */}
             <Box
               sx={{
-                minWidth: totalBeats * 80,
                 display: "grid",
                 gridTemplateRows: "32px auto auto",
+                backgroundColor: "#474747",
               }}
             >
-              <TrackRuler
-                measures={measures}
-                beatsPerMeasure={beatsPerMeasure}
-                onAddMeasures={() => setMeasures(measures + 4)}
-              />
+              {/* Empty corner (aligns with ruler) */}
+              <Box />
 
-              <PianoRollGrid
-                chordEvents={chordEvents}
-                measures={measures}
-                beatsPerMeasure={beatsPerMeasure}
-                isPlaying={isPlaying}
-                bpm={bpm}
-                onEnded={handleEnded}
-              />
+              {/* Piano keys */}
+              <PianoKeys />
 
-              <ChordTimeline
-                chordEvents={chordEvents}
-                measures={measures}
-                beatsPerMeasure={beatsPerMeasure}
-                onAddChord={handleAddChord}
-                onMoveChord={moveChord}
-                onResizeChord={resizeChord}
-              />
+              {/* Delete bin */}
+              <Box
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => {
+                  const data = e.dataTransfer.getData("application/chord-event");
+                  if (!data) return;
+                  const event = JSON.parse(data);
+                  deleteChord(event.id);
+                }}
+                sx={{
+                  height: 60,
+                  width: 40,
+                  border: "2px dashed #d64f4f",
+                  borderRadius: 2,
+                  color: "#d64f4f",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  justifySelf: "center",
+                  cursor: "pointer",
+                  mt: 1,
+                }}
+              >
+                <DeleteIcon />
+              </Box>
+            </Box>
+
+            {/* RIGHT: scrollable */}
+            <Box sx={{ overflowX: "auto" }}>
+              <Box
+                sx={{
+                  minWidth: totalBeats * 80,
+                  display: "grid",
+                  gridTemplateRows: "32px auto auto",
+                }}
+              >
+                <TrackRuler
+                  measures={measures}
+                  beatsPerMeasure={beatsPerMeasure}
+                  onAddMeasures={() => setMeasures(measures + 4)}
+                />
+
+                <PianoRollGrid
+                  chordEvents={chordEvents}
+                  measures={measures}
+                  beatsPerMeasure={beatsPerMeasure}
+                  isPlaying={isPlaying}
+                  bpm={bpm}
+                  onEnded={handleEnded}
+                />
+
+                <ChordTimeline
+                  chordEvents={chordEvents}
+                  measures={measures}
+                  beatsPerMeasure={beatsPerMeasure}
+                  onAddChord={handleAddChord}
+                  onMoveChord={moveChord}
+                  onResizeChord={resizeChord}
+                />
+              </Box>
             </Box>
           </Box>
-        </Box>
 
-      </Box>
+        </Box>
+      </div>
     </div>
   );
 }

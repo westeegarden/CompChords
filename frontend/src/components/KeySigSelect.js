@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TextField, Select, FormControl, InputLabel, MenuItem, Box, Chip } from '@mui/material';
 import '../styles/ToolPanel.css';
 
-export default function KeySigSelect() {
-    const [keyCenter, setKeyCenter] = useState('C');
-    const [keyQuality, setKeyQuality] = useState('major');
+export default function KeySigSelect({ keyCenter, keyQuality, onKeyChange }) {
     const [keyInfo, setKeyInfo] = useState(null);
     const [error, setError] = useState(null);
 
@@ -54,7 +52,7 @@ export default function KeySigSelect() {
                                 id="keyCenter"
                                 value={keyCenter}
                                 label="Key Center"
-                                onChange={(e) => setKeyCenter(e.target.value)}
+                                onChange={(e) => onKeyChange(e.target.value, keyQuality)}
                             >
                                 {keyCenters.map((r) => (
                                     <MenuItem key={r} value={r}>
@@ -72,7 +70,7 @@ export default function KeySigSelect() {
                             id="keyQuality"
                             value={keyQuality}
                             label="Key Quality"
-                            onChange={(e) => setKeyQuality(e.target.value)}
+                            onChange={(e) => onKeyChange(keyCenter, e.target.value)}
                         >
                             {keyQualities.map((r) => (
                                 <MenuItem key={r} value={r}>

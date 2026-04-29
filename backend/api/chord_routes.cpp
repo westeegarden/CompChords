@@ -6,6 +6,7 @@
 #include <mutex>
 #include "../domain/Key.h"
 #include "../services/ChordService.h"
+#include "../services/KeyService.h"
 #include "../state/MusicState.h"
 
 void registerChordRoutes(crow::SimpleApp& app,
@@ -21,10 +22,13 @@ void registerChordRoutes(crow::SimpleApp& app,
 
         auto root = req.url_params.get("root");
         auto mod = req.url_params.get("mod");
+        auto keyParam = req.url_params.get("key");
+        auto qualityParam = req.url_params.get("quality");
 
         if (!root || !mod)
             return crow::response(400, "Missing params");
 
+        KeyService::setActiveKey(state, keyParam, qualityParam);
         ChordService::buildChord(state, root, mod);
 
         crow::json::wvalue res;

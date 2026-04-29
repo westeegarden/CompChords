@@ -1,9 +1,8 @@
 .track {
-    border: 4px solid #231650;
+    border: 4px solid #B83A14;
     border-radius: 20px;
     padding: 16px;
-    margin-top: 16px;
-    margin-right: 16px;
+    margin: 1px;
     background-color: #c9ccce;
 }
 
