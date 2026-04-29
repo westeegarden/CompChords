@@ -22,7 +22,7 @@ export default function PianoRollGrid({
 }) {
   const totalBeats = measures * beatsPerMeasure;
 
-  // Map from chordEvent id -> array of pitch class strings in its key
+  // Map from chordEvent id to array of pitch class strings in its key
   const [keySigMap, setKeySigMap] = useState({});
 
   const [cursorPercent, setCursorPercent] = useState(0);

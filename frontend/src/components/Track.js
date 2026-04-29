@@ -60,8 +60,8 @@ export default function Track() {
     return () => window.removeEventListener("keydown", handleKeydown);
   }, [isPlaying]);
 
-  const handlePlay = () => {
-    createTrack(chordEvents)
+  const handlePlay = async () => {
+    await createTrack(chordEvents);
     play();
     setIsPlaying(true);
   };

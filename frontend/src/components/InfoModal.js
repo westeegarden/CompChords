@@ -53,7 +53,7 @@ const FAQ = [
     },
     {
         question: "Example Chord Progressions",
-        answer: "Here are some examples of chord progressions to get you started. One of the most common cadential movements is the II-V-I (2-5-1).",
+        answer: "Here are some examples of chord progressions to get you started. One of the most common cadential movements is the II-V-I (2-5-1). In the key of C, this would be Dm7 - G7 - Cmaj7. Another easy progression is the 12-bar blues. In the key of C, this would be: C7 - C7 - C7 - C7 - F7 - F7 - C7 - C7 - G7 - F7 - C7 - G7.",
     }
 ];
 
@@ -62,7 +62,7 @@ export default function InfoModal({ onClose }) {
         <div className="modal-overlay" onClick={onClose}>
             <div
                 className="modal-box"
-                onClick={(e) => e.stopPropagation()} // prevent overlay click from closing when clicking inside
+                onClick={(e) => e.stopPropagation()} 
             >
                 <div className="modal-header">
                     <h2>Help</h2>
