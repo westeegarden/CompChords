@@ -34,7 +34,7 @@ export default function ChordBuilder({ keyCenter, keyQuality }) {
             const currentQuality = keyQualityRef.current;
             try {
                 const res = await fetch(
-                    `http://localhost:18080/api/chordBuilder?root=${encodeURIComponent(root)}&mod=${mod}&key=${encodeURIComponent(currentKey)}&quality=${currentQuality}`,
+                    `http://localhost:18080/api/chordBuilder?root=${encodeURIComponent(root)}&mod=${encodeURIComponent(mod)}&key=${encodeURIComponent(currentKey)}&quality=${currentQuality}`,
                     { signal: controller.signal }
                 );
                 if (!res.ok) throw new Error(await res.text());
